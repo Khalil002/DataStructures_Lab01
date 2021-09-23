@@ -433,7 +433,6 @@ public class UI extends javax.swing.JFrame {
             u = new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, 0);
             a.registrarUsuario(u);
 
-            
             if (UsuarioGen.getBalance() > 0) {
                 a.realizarTransaccion(UsuarioGen, u, 50);
             }
@@ -521,8 +520,13 @@ public class UI extends javax.swing.JFrame {
             Usuario u2 = a.buscarUsuario(id2);
             destino.setText("");
             monto.setText("");
-            if (u2 != null) {
+            if (u == u2) {
+                JOptionPane.showMessageDialog(null, "No puede transferir dinero a si mismo");
+                destino.setText("");
+
+            } else if (u2 != null) {
                 a.realizarTransaccion(u, u2, dineroT);
+                a.guardarArchivo();
             } else {
                 JOptionPane.showMessageDialog(null, "Ese usuario no existe");
                 destino.setText("");
