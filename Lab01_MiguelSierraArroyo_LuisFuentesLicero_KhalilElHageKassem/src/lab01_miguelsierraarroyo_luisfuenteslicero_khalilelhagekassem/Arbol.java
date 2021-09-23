@@ -143,6 +143,7 @@ public class Arbol {
         if (!file.exists()) {
             try {
                 file.createNewFile();
+                r.insertarUsuario("master", "admin", 0, "admin@master.com", "master", 0, 1000);
             } catch (IOException ex) {
                 System.out.println("Error en crear el archivo");
             }

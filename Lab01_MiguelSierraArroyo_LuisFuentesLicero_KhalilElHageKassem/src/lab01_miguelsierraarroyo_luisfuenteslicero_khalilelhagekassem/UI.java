@@ -373,26 +373,8 @@ public class UI extends javax.swing.JFrame {
 
     int auxiliar = 0;
     Arbol a = new Arbol();
-    Usuario UsuarioGen = a.r.usuario;
+    Usuario UsuarioGen = a.buscarUsuario(0);
     Usuario u;
-    
-    public void cerrar(){
-        
-        try{
-            this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-            addWindowListener(new WindowAdapter(){
-                public void windowClosing(WindowEvent e){
-                    a.guardarArchivo();
-                    System.out.println("probando");
-                }
-            });
-            this.setVisible(true);
-            
-        }catch(Exception e){
-            System.out.println("error");
-        }
-        
-    }
 
 
     private void ingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresarActionPerformed
@@ -448,57 +430,21 @@ public class UI extends javax.swing.JFrame {
             String contraseña = String.valueOf(jcontraseña.getPassword());
             int nextId = 0;
 
-            File folder = new File("data");
-            if (!folder.exists()) {
-                try {
-                    folder.mkdir();
-                } catch (Exception e) {
-                    System.out.println("Error en crear el folder");
-                }
+            u = new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, 0);
+            a.registrarUsuario(u);
+
+            mostrarCuenta(u);
+            a.guardarArchivo();
+
+            jnombre.setText("");
+            japellido.setText("");
+            jnumero.setText("");
+            jemail.setText("");
+            jcontraseña.setText("");
+
+            if (UsuarioGen.getBalance() > 0) {
+                a.realizarTransaccion(UsuarioGen, u, 50);
             }
-            File file = new File(folder, "usuarios.csv");
-            if (!file.exists()) {
-                try {
-                    file.createNewFile();
-                } catch (IOException ex) {
-                    System.out.println("Error en crear el archivo");
-                }
-            } else {
-                String usuario = jusuario.getText();
-                String contra = String.valueOf(jcontra.getPassword());
-                try {
-
-                    Scanner in = new Scanner(file);
-                    while (in.hasNextLine()) {
-                        String linea = in.nextLine();
-                        String datos[] = linea.split(",");
-                        nextId = Integer.parseInt(datos[5]);
-
-
-                    }
-                    nextId++;
-
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "Error revise los campos " + ex.getStackTrace()[0] + " " + ex);
-                }
-
-            }
-
-                u = new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, 0);
-                a.registrarUsuario(u);
-
-                mostrarCuenta(u);
-                a.guardarArchivo();
-
-                jnombre.setText("");
-                japellido.setText("");
-                jnumero.setText("");
-                jemail.setText("");
-                jcontraseña.setText("");
-            
-                if (UsuarioGen.getBalance()>0){
-                    a.realizarTransaccion(UsuarioGen, u, 50);
-                }
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error revise los campos");
@@ -575,7 +521,7 @@ public class UI extends javax.swing.JFrame {
             Usuario u2 = a.buscarUsuario(id2);
             destino.setText("");
             monto.setText("");
-            if (u2 != null){
+            if (u2 != null) {
                 a.realizarTransaccion(u, u2, dineroT);
             } else {
                 JOptionPane.showMessageDialog(null, "Ese usuario no existe");
