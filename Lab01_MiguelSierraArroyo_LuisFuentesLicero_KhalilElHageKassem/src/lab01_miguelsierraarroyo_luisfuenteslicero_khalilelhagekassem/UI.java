@@ -565,7 +565,16 @@ public class UI extends javax.swing.JFrame {
     }//GEN-LAST:event_show1ActionPerformed
 
     private void realizarTransaccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_realizarTransaccionActionPerformed
-        // TODO add your handling code here:
+        
+        try {
+            int id2 = Integer.parseInt(destino.getText());
+            float dineroT = Integer.parseInt(monto.getText());
+            Usuario u2 = a.buscarUsuario(id2);
+            a.realizarTransaccion(u, u2, dineroT);
+        } catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Error revise los campos");
+        }
+        
     }//GEN-LAST:event_realizarTransaccionActionPerformed
 
     private void mostrarArbolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mostrarArbolActionPerformed

@@ -26,8 +26,8 @@ public class Arbol {
         abrirUsuarios();
     }
 
-    public void buscarUsuario(int uID) {
-        r.buscarUsuario(uID);
+    public Usuario buscarUsuario(int uID) {
+        return r.buscarUsuario(uID);
     }
 
     public void registrarUsuario(Usuario u) {
