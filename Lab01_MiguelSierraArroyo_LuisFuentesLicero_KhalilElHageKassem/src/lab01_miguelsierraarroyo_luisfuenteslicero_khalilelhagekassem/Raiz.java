@@ -20,9 +20,8 @@ public class Raiz extends Nodo {
 
     public Raiz(String texto) {
         super(texto);
-        usuario = null;
         bloque = new Bloque("0");
-        
+
     }
 
     public Usuario buscarUsuario(int uID) {
@@ -122,8 +121,8 @@ public class Raiz extends Nodo {
         return 0;
     }
 
-     public void registrarUsuario(Usuario u) {
-         totalNodes++;
+    public void registrarUsuario(Usuario u) {
+        totalNodes++;
         if (usuario == null) {
             usuario = u;
         } else {
@@ -132,11 +131,15 @@ public class Raiz extends Nodo {
 
     }
 
-    
- 
     public void insertarUsuario(String nombre, String apellido, int numeroIdentificacion, String email, String contraseña, int id, float balance) {
         totalNodes++;
-        this.usuario = insertarUsuario(this.usuario, new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, balance, id));
+        Usuario u = new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, balance, id);
+        if (usuario == null) {
+            usuario = u;
+        } else {
+            this.usuario = insertarUsuario(this.usuario, u);
+        }
+
     }
 
     public String preOrder() {
@@ -151,7 +154,6 @@ public class Raiz extends Nodo {
     }
 
     private Usuario insertarUsuario(Usuario u, Usuario m) {
-        System.out.println("c");
         if (u == null) {
             return m;
 
@@ -166,28 +168,27 @@ public class Raiz extends Nodo {
     }
 
     private void updateHeight(Usuario n) {
-        n.setAltura(1 + Math.max(n.getIzquierda().getAltura(), n.getDerecha().getAltura()));
+        n.setAltura(1 + Math.max(userHeight(n.getIzquierda()), userHeight(n.getDerecha())));
     }
 
-    
-    private int blockHeight(Bloque b){
-        if(b == null){
+    private int blockHeight(Bloque b) {
+        if (b == null) {
             return 0;
-        }else{
+        } else {
             return 1 + blockHeight(b.getBloqueSiguiente());
         }
     }
+
     private int userHeight(Usuario n) {
-        return n == null ? -1 : n.getAltura();
+        return n == null ? 0 : n.getAltura();
     }
-    
-    public int height(){
+
+    public int height() {
         return Math.max(userHeight(usuario), blockHeight(bloque));
     }
-    
 
     private int getBalance(Usuario n) {
-        return n == null ? 0 : n.getDerecha().getAltura() - n.getIzquierda().getAltura();
+        return n == null ? 0 : userHeight(n.getDerecha()) - userHeight(n.getIzquierda());
     }
 
     private Usuario rotateRight(Usuario y) {
@@ -213,31 +214,30 @@ public class Raiz extends Nodo {
     private Usuario rebalance(Usuario z) {
         updateHeight(z);
         int balance = getBalance(z);
-        if (balance > 1) {
-            if (z.getDerecha().getDerecha().getAltura()
-                    > z.getDerecha().getIzquierda().getAltura()) {
-                z = rotateLeft(z);
-            } else {
-                z.setDerecha(rotateRight(z.getDerecha()));
-                z = rotateLeft(z);
-            }
-        } else if (balance < -1) {
-            if (z.getIzquierda().getIzquierda().getAltura()
-                    > z.getIzquierda().getDerecha().getAltura()) {
+        if (balance < -1) {
+            if (getBalance(z.getIzquierda()) <= 0) {
                 z = rotateRight(z);
             } else {
                 z.setIzquierda(rotateLeft(z.getIzquierda()));
                 z = rotateRight(z);
             }
+        } else if (balance > 1) {
+            if (getBalance(z.getDerecha()) >= 0) {
+                z = rotateLeft(z);
+            } else {
+                z.setDerecha(rotateRight(z.getDerecha()));
+                z = rotateLeft(z);
+            }
         }
+
         return z;
     }
 
-    public Usuario eliminarUsuario(int id){
+    public Usuario eliminarUsuario(int id) {
         totalNodes--;
         return eliminarUsuario(usuario, id);
     }
-    
+
     public Usuario eliminarUsuario(Usuario u, int id) {
         if (u == null) {
             return u;
@@ -293,7 +293,7 @@ public class Raiz extends Nodo {
                 pnext = p.getBloqueSiguiente();
             }
             ;
-            if(p.addTransaccion(t)){
+            if (p.addTransaccion(t)) {
                 totalNodes++;
             }
         }
@@ -318,5 +318,7 @@ public class Raiz extends Nodo {
     public int getTotalNodes() {
         return totalNodes;
     }
+
+    
 
 }

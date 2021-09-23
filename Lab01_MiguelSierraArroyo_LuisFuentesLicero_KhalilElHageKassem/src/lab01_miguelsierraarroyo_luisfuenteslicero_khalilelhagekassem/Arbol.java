@@ -30,6 +30,8 @@ public class Arbol {
         return r.buscarUsuario(uID);
     }
 
+    
+
     public void registrarUsuario(Usuario u) {
         r.registrarUsuario(u);
     }
@@ -47,18 +49,31 @@ public class Arbol {
     }
 
     public void guardarArchivo() {
-        try (FileWriter fw = new FileWriter("usuarios.csv", true)) {
+        File folder = new File("data");
+        try {
+            folder.mkdir();
+        } catch (Exception e) {
+            System.out.println("Error en crear el folder");
+        }
+        File file = new File(folder, "usuarios.csv");
+        try {
+            file.createNewFile();
+        } catch (IOException ex) {
+            System.out.println("Error en crear el archivo");
+        }
+        try ( FileWriter fw = new FileWriter(file, false)) {
             BufferedWriter bw = new BufferedWriter(fw);
 
             bw.write(r.preOrder());
-            bw.newLine();
             bw.flush();
             bw.close();
             fw.close();
 
         } catch (Exception e) {
             System.out.println("error");
+
         }
+
     }
 
     static void removeLine(String filePath, String lineToRemove) throws IOException {
@@ -116,18 +131,33 @@ public class Arbol {
     }
 
     public void abrirUsuarios() {
-        File f = new File("C://user");
-        File file = new File("C://user", "usuarios.csv");
+        File folder = new File("data");
+        if (!folder.exists()) {
+            try {
+                folder.mkdir();
+            } catch (Exception e) {
+                System.out.println("Error en crear el folder");
+            }
+        }
+        File file = new File(folder, "usuarios.csv");
         if (!file.exists()) {
-            createFile(f, file);
+            try {
+                file.createNewFile();
+            } catch (IOException ex) {
+                System.out.println("Error en crear el archivo");
+            }
         } else {
             try {
-                Scanner in = new Scanner(f);
+                Scanner in = new Scanner(file);
                 int i = 0;
                 while (in.hasNextLine()) {
                     String linea = in.nextLine();
                     String datos[] = linea.split(",");
-                    r.insertarUsuario(datos[0], datos[1], Integer.parseInt(datos[2]), datos[3], datos[4], Integer.parseInt(datos[5]), Float.parseFloat(datos[6]));
+
+                    //archivo id, nombre, apellido, cedula, email, contra, balance;
+                    //insertar nombre, apellido, cedula, email, contra, id, balance;
+                    r.insertarUsuario(datos[1], datos[2], Integer.parseInt(datos[3]), datos[4], datos[5], Integer.parseInt(datos[0]), Float.parseFloat(datos[6]));
+
                     i++;
                 }
                 if (i > r.usuario.getIdgen()) {
@@ -135,7 +165,7 @@ public class Arbol {
                 }
 
             } catch (Exception ex) {
-                System.out.println("errosr");
+                System.out.println(ex + "bruh?");
             }
         }
     }
@@ -143,7 +173,5 @@ public class Arbol {
     public int height() {
         return r.height();
     }
-
-    
 
 }

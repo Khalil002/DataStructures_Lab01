@@ -5,10 +5,13 @@
  */
 package lab01_miguelsierraarroyo_luisfuenteslicero_khalilelhagekassem;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
 
 /**
  *
@@ -21,7 +24,7 @@ public class UI extends javax.swing.JFrame {
      */
     public UI() {
         initComponents();
-        
+
         this.setLocationRelativeTo(null);
         mostrarArbol.setVisible(false);
     }
@@ -372,52 +375,22 @@ public class UI extends javax.swing.JFrame {
     Arbol a = new Arbol();
     Usuario u;
 
+
     private void ingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresarActionPerformed
-
-        File f = new File("usuarios.csv");
-        String usuario = jusuario.getText();
+        int id = Integer.parseInt(jusuario.getText());
         String contra = String.valueOf(jcontra.getPassword());
-        try {
 
-            Scanner in = new Scanner(f);
-            while (in.hasNextLine()) {
-                String linea = in.nextLine();
-                String datos[] = linea.split(",");
-                String nombre = datos[0];
-                String apellido = datos[1];
-                int numeroIdentificacion = Integer.parseInt(datos[2]);
-                String email = datos[3];
-                String contraseña = datos[4];
-                int id = Integer.parseInt(datos[5]);
-                float balance = Float.parseFloat(datos[6]);
-
-                if (usuario.trim().equals(email.trim()) && contra.trim().equals(contraseña.trim()) && auxiliar == 0) {
-                    cuenta.setVisible(true);
-                    cuenta.setLocationRelativeTo(null);
-                    this.setVisible(false);
-                    mostrarCuenta(u);
-                    auxiliar++;
-                    
-                    if (id==1) {
-                        mostrarArbol.setVisible(true);
-                    }
-                    
-                }
-
+        u = a.buscarUsuario(id);
+        if (u == null) {
+            JOptionPane.showMessageDialog(null, "ID incorrecto");
+        } else {
+            if (!(u.getContraseña().equals(contra))) {
+                JOptionPane.showMessageDialog(null, "Contra incorrecta!");
+            } else {
+                mostrarCuenta(u);
             }
-
-            if (auxiliar == 0) {
-                JOptionPane.showMessageDialog(null, "Usuario o contraseña equivocado");
-                jcontra.setText("");
-                jusuario.setText("");
-                auxiliar = 0;
-            }
-
-            auxiliar = 0;
-
-        } catch (Exception ex) {
-            System.out.println("error");
         }
+
 
     }//GEN-LAST:event_ingresarActionPerformed
 
@@ -446,7 +419,7 @@ public class UI extends javax.swing.JFrame {
     boolean emailRepetido = false;
 
     private void registrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarseActionPerformed
-        
+
         try {
 
             String nombre = jnombre.getText();
@@ -456,27 +429,44 @@ public class UI extends javax.swing.JFrame {
             String contraseña = String.valueOf(jcontraseña.getPassword());
             int nextId = 0;
 
-            File f = new File("usuarios.csv");
-            String usuario = jusuario.getText();
-            String contra = String.valueOf(jcontra.getPassword());
-            try {
-
-                Scanner in = new Scanner(f);
-                while (in.hasNextLine()) {
-                    String linea = in.nextLine();
-                    String datos[] = linea.split(",");
-                    String emailC = datos[3];
-                    nextId = Integer.parseInt(datos[5]);
-
-                    if (emailC.equals(email)) {
-                        emailRepetido = true;
-                    }
-
+            File folder = new File("data");
+            if (!folder.exists()) {
+                try {
+                    folder.mkdir();
+                } catch (Exception e) {
+                    System.out.println("Error en crear el folder");
                 }
-                nextId++;
+            }
+            File file = new File(folder, "usuarios.csv");
+            if (!file.exists()) {
+                try {
+                    file.createNewFile();
+                } catch (IOException ex) {
+                    System.out.println("Error en crear el archivo");
+                }
+            } else {
+                String usuario = jusuario.getText();
+                String contra = String.valueOf(jcontra.getPassword());
+                try {
 
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, "Error revise los campos " + ex.getStackTrace()[0] + " "+ex);
+                    Scanner in = new Scanner(file);
+                    while (in.hasNextLine()) {
+                        String linea = in.nextLine();
+                        String datos[] = linea.split(",");
+                        String emailC = datos[3];
+                        nextId = Integer.parseInt(datos[5]);
+
+                        if (emailC.equals(email)) {
+                            emailRepetido = true;
+                        }
+
+                    }
+                    nextId++;
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Error revise los campos " + ex.getStackTrace()[0] + " " + ex);
+                }
+
             }
 
             if (emailRepetido == true) {
@@ -485,8 +475,9 @@ public class UI extends javax.swing.JFrame {
             } else {
                 u = new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, 0);
                 a.registrarUsuario(u);
-                
+
                 mostrarCuenta(u);
+                a.guardarArchivo();
 
                 jnombre.setText("");
                 japellido.setText("");
@@ -497,7 +488,7 @@ public class UI extends javax.swing.JFrame {
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error revise los campos");
-            System.out.println(e);
+            System.out.println(e + "\nfuck");
         }
 
 
@@ -564,16 +555,16 @@ public class UI extends javax.swing.JFrame {
     }//GEN-LAST:event_show1ActionPerformed
 
     private void realizarTransaccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_realizarTransaccionActionPerformed
-        
+
         try {
             int id2 = Integer.parseInt(destino.getText());
             float dineroT = Integer.parseInt(monto.getText());
             Usuario u2 = a.buscarUsuario(id2);
             a.realizarTransaccion(u, u2, dineroT);
-        } catch (Exception e){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error revise los campos");
         }
-        
+
     }//GEN-LAST:event_realizarTransaccionActionPerformed
 
     private void mostrarArbolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mostrarArbolActionPerformed
@@ -589,7 +580,7 @@ public class UI extends javax.swing.JFrame {
         jid.setText(String.valueOf(u.getId()));
         jbalance.setText(String.valueOf(u.getBalance()) + " $");
         jnom.setText(u.getNombre() + " " + u.getApellido());
-        
+
         cuenta.setVisible(true);
         registro.setVisible(false);
     }
