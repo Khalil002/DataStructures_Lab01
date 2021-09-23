@@ -24,47 +24,60 @@ public class Bloque extends Nodo {
     private static int idgen = 0;
     private int id;
     private Bloque bloqueSiguiente;
+    public Raiz r;
 
     public Bloque(String hashAnterior) {
         super(String.valueOf("Bloque " + idgen));
         this.id = idgen;
-        nonce = (int)Math.random();
+        nonce = (int) Math.random();
         idgen++;
     }
 
     public String getHash() {
         return hash;
     }
+
     public String getHashAnterior() {
         return hashAnterior;
     }
+
     public ArrayList<Transaccion> getTransacciones() {
         return transacciones;
     }
+
     public long getTiempodeCreacion() {
         return tiempodeCreacion;
     }
-    public Bloque getBloqueSiguiente(){
+
+    public Bloque getBloqueSiguiente() {
         return bloqueSiguiente;
     }
-    
-    public boolean addTransaccion(Transaccion t){
-        if (transacciones.size()<3){
+
+    public void addTransaccion(Transaccion t) {
+        if (transacciones.size() < 3) {
             transacciones.add(t);
-            return false;
         } else {
             setBloqueSiguiente(new Bloque(this.hash));
             this.bloqueSiguiente.addTransaccion(t);
-            return true;
         }
     }
+
+    public void addTransaccion(int id, int u1ID, int u2ID, int monto) {
+        Usuario u1 = UI.a.r.buscarUsuario(u1ID);
+        Usuario u2 = UI.a.r.buscarUsuario(u2ID);
+
+        addTransaccion(new Transaccion(u1, u2, monto, id));
+
+    }
+
     public void setTransacciones(ArrayList<Transaccion> transacciones) {
         this.transacciones = transacciones;
     }
-    public void setBloqueSiguiente(Bloque bloqueSiguiente){
+
+    public void setBloqueSiguiente(Bloque bloqueSiguiente) {
         this.bloqueSiguiente = bloqueSiguiente;
     }
-    
+
     public String calculateBlockHash() {
         String datosAHash = hashAnterior
                 + Long.toString(tiempodeCreacion)
@@ -83,5 +96,13 @@ public class Bloque extends Nodo {
             buffer.append(String.format("%02x", b));
         }
         return buffer.toString();
+    }
+
+    public static int getIdgen() {
+        return idgen;
+    }
+
+    public static void setIdgen(int idgen) {
+        Bloque.idgen = idgen;
     }
 }

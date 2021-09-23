@@ -31,5 +31,9 @@ public class Estado extends Nodo{
         return "Estado{" + "b1=" + b1 + ", b2=" + b2 + '}';
     }
     
+    public String getData(){
+        return b1 + "," + b2;
+    }
+    
     
 }

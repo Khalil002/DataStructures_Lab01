@@ -73,6 +73,25 @@ public class Arbol {
             System.out.println("error");
 
         }
+        
+        File file2 = new File(folder, "transacciones.csv");
+        try {
+            file2.createNewFile();
+        } catch (IOException ex) {
+            System.out.println("Error en crear el archivo");
+        }
+        try ( FileWriter fw = new FileWriter(file2, false)) {
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            bw.write(r.recorrerBloques());
+            bw.flush();
+            bw.close();
+            fw.close();
+
+        } catch (Exception e) {
+            System.out.println("error");
+
+        }
 
     }
 
@@ -163,6 +182,36 @@ public class Arbol {
                 }
                 if (i > r.usuario.getIdgen()) {
                     this.r.usuario.setIdgen(i);
+                }
+
+            } catch (Exception ex) {
+                System.out.println(ex + "bruh?");
+            }
+        }
+        
+        File file1 = new File(folder, "transacciones.csv");
+        if (!file1.exists()) {
+            try {
+                file1.createNewFile();
+            } catch (IOException ex) {
+                System.out.println("Error en crear el archivo");
+            }
+        } else {
+            try {
+                Scanner in = new Scanner(file);
+                int i = 0;
+                while (in.hasNextLine()) {
+                    String linea = in.nextLine();
+                    String datos[] = linea.split(",");
+
+                    //archivo id, nombre, apellido, cedula, email, contra, balance;
+                    //insertar nombre, apellido, cedula, email, contra, id, balance;
+                    r.bloque.addTransaccion(Integer.parseInt(datos[1]), Integer.parseInt(datos[2]), Integer.parseInt(datos[3]), Integer.parseInt(datos[4]));
+
+                    i++;
+                }
+                if (i > r.bloque.getIdgen()) {
+                    this.r.bloque.setIdgen(i);
                 }
 
             } catch (Exception ex) {

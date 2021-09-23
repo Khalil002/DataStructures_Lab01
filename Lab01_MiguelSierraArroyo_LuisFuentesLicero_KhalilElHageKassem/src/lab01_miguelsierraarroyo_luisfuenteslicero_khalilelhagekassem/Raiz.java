@@ -21,6 +21,7 @@ public class Raiz extends Nodo {
     public Raiz(String texto) {
         super(texto);
         bloque = new Bloque("0");
+        bloque.r = this;
         usuario = null;
     }
 
@@ -151,6 +152,18 @@ public class Raiz extends Nodo {
             return n.getData() + "\n" + preOrder(n.getIzquierda()) + preOrder(n.getDerecha());
         }
         return "";
+    }
+
+    public String recorrerBloques() {
+        String text = "";
+        Bloque p = bloque;
+        while (p != null) {
+            for (Transaccion t : p.getTransacciones()) {
+                text += t.getData() + "\n";
+            }
+            p = p.getBloqueSiguiente();
+        }
+        return text;
     }
 
     private Usuario insertarUsuario(Usuario u, Usuario m) {
@@ -292,15 +305,15 @@ public class Raiz extends Nodo {
                 p = pnext;
                 pnext = p.getBloqueSiguiente();
             }
-            if (p.addTransaccion(t)) {
-                totalNodes++;
-            }
+            p.addTransaccion(t);
         }
     }
 
     private boolean verificarTransaccion(Usuario u1, Bloque bloque) {
-        if(u1.getId()==0)return true;
-        
+        if (u1.getId() == 0) {
+            return true;
+        }
+
         Bloque p = bloque;
         float balanceVerif = 0;
         while (p != null) {
@@ -319,7 +332,5 @@ public class Raiz extends Nodo {
     public int getTotalNodes() {
         return totalNodes;
     }
-
-    
 
 }
