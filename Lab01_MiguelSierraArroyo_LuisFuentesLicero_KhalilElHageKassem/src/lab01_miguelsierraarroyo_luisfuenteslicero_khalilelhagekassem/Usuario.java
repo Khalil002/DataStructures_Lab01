@@ -27,7 +27,7 @@ public class Usuario extends Nodo {
     private Usuario derecha;
     private int id;
     private int altura;
-    private static int idgen = 0;
+    private static int idgen = 1;
 
     public Usuario(String nombre, String apellido, int numeroIdentificacion, String email, String contraseña, float balance) {
         super(String.valueOf(idgen));

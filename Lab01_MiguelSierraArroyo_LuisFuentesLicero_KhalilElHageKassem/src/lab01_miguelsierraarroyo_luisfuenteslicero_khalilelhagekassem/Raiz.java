@@ -21,7 +21,7 @@ public class Raiz extends Nodo {
     public Raiz(String texto) {
         super(texto);
         bloque = new Bloque("0");
-
+        usuario = new Usuario("Master", "", 0, "", "12345678", 1000, 0);
     }
 
     public Usuario buscarUsuario(int uID) {

@@ -373,6 +373,7 @@ public class UI extends javax.swing.JFrame {
 
     int auxiliar = 0;
     Arbol a = new Arbol();
+    Usuario UsuarioGen = a.r.usuario;
     Usuario u;
     
     public void cerrar(){
@@ -471,12 +472,8 @@ public class UI extends javax.swing.JFrame {
                     while (in.hasNextLine()) {
                         String linea = in.nextLine();
                         String datos[] = linea.split(",");
-                        String emailC = datos[3];
                         nextId = Integer.parseInt(datos[5]);
 
-                        if (emailC.equals(email)) {
-                            emailRepetido = true;
-                        }
 
                     }
                     nextId++;
@@ -487,10 +484,6 @@ public class UI extends javax.swing.JFrame {
 
             }
 
-            if (emailRepetido == true) {
-                JOptionPane.showMessageDialog(null, "Ese email ya se encuentra en uso");
-                emailRepetido = false;
-            } else {
                 u = new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, 0);
                 a.registrarUsuario(u);
 
@@ -502,11 +495,13 @@ public class UI extends javax.swing.JFrame {
                 jnumero.setText("");
                 jemail.setText("");
                 jcontraseña.setText("");
-            }
+            
+                if (UsuarioGen.getBalance()>0){
+                    a.realizarTransaccion(UsuarioGen, u, 50);
+                }
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error revise los campos");
-            System.out.println(e + "\nfuck");
         }
 
 
@@ -578,7 +573,12 @@ public class UI extends javax.swing.JFrame {
             int id2 = Integer.parseInt(destino.getText());
             float dineroT = Integer.parseInt(monto.getText());
             Usuario u2 = a.buscarUsuario(id2);
-            a.realizarTransaccion(u, u2, dineroT);
+            if (u2 != null){
+                a.realizarTransaccion(u, u2, dineroT);
+            } else {
+                JOptionPane.showMessageDialog(null, "Ese usuario no existe");
+                destino.setText("");
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error revise los campos");
         }
