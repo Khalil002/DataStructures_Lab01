@@ -573,6 +573,8 @@ public class UI extends javax.swing.JFrame {
             int id2 = Integer.parseInt(destino.getText());
             float dineroT = Integer.parseInt(monto.getText());
             Usuario u2 = a.buscarUsuario(id2);
+            destino.setText("");
+            monto.setText("");
             if (u2 != null){
                 a.realizarTransaccion(u, u2, dineroT);
             } else {
