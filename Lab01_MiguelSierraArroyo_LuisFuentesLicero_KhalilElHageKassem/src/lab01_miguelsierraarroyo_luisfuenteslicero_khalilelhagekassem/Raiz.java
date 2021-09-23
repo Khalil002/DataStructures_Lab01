@@ -16,6 +16,7 @@ public class Raiz extends Nodo {
 
     public Usuario usuario;
     public Bloque bloque;
+    private int totalNodes = 0;
 
     public Raiz(String texto) {
         super(texto);
@@ -122,6 +123,7 @@ public class Raiz extends Nodo {
     }
 
      public void registrarUsuario(Usuario u) {
+         totalNodes++;
         if (usuario == null) {
             usuario = u;
         } else {
@@ -130,7 +132,10 @@ public class Raiz extends Nodo {
 
     }
 
+    
+ 
     public void insertarUsuario(String nombre, String apellido, int numeroIdentificacion, String email, String contraseña, int id, float balance) {
+        totalNodes++;
         this.usuario = insertarUsuario(this.usuario, new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, balance, id));
     }
 
@@ -164,9 +169,22 @@ public class Raiz extends Nodo {
         n.setAltura(1 + Math.max(n.getIzquierda().getAltura(), n.getDerecha().getAltura()));
     }
 
-    private int height(Usuario n) {
+    
+    private int blockHeight(Bloque b){
+        if(b == null){
+            return 0;
+        }else{
+            return 1 + blockHeight(b.getBloqueSiguiente());
+        }
+    }
+    private int userHeight(Usuario n) {
         return n == null ? -1 : n.getAltura();
     }
+    
+    public int height(){
+        return Math.max(userHeight(usuario), blockHeight(bloque));
+    }
+    
 
     private int getBalance(Usuario n) {
         return n == null ? 0 : n.getDerecha().getAltura() - n.getIzquierda().getAltura();
@@ -215,6 +233,11 @@ public class Raiz extends Nodo {
         return z;
     }
 
+    public Usuario eliminarUsuario(int id){
+        totalNodes--;
+        return eliminarUsuario(usuario, id);
+    }
+    
     public Usuario eliminarUsuario(Usuario u, int id) {
         if (u == null) {
             return u;
@@ -257,6 +280,7 @@ public class Raiz extends Nodo {
 
     public void realizarTransaccion(Usuario r1, Usuario r2, float dinero) {
         transaccion(r1, r2, dinero, bloque);
+        totalNodes++;
     }
 
     private void transaccion(Usuario u1, Usuario u2, float dinero, Bloque bloque) {
@@ -268,7 +292,10 @@ public class Raiz extends Nodo {
                 p = pnext;
                 pnext = p.getBloqueSiguiente();
             }
-            p.addTransaccion(t);
+            ;
+            if(p.addTransaccion(t)){
+                totalNodes++;
+            }
         }
     }
 
@@ -286,6 +313,10 @@ public class Raiz extends Nodo {
             p = p.getBloqueSiguiente();
         }
         return balanceVerif == u1.getBalance();
+    }
+
+    public int getTotalNodes() {
+        return totalNodes;
     }
 
 }

@@ -48,12 +48,14 @@ public class Bloque extends Nodo {
         return bloqueSiguiente;
     }
     
-    public void addTransaccion(Transaccion t){
+    public boolean addTransaccion(Transaccion t){
         if (transacciones.size()<3){
             transacciones.add(t);
+            return false;
         } else {
             setBloqueSiguiente(new Bloque(this.hash));
             this.bloqueSiguiente.addTransaccion(t);
+            return true;
         }
     }
     public void setTransacciones(ArrayList<Transaccion> transacciones) {

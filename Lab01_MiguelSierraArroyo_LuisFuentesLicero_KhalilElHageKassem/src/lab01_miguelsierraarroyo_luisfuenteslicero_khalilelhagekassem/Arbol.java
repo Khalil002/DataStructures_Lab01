@@ -38,6 +38,14 @@ public class Arbol {
         r.realizarTransaccion(r1, r2, dinero);
     }
 
+    public void eliminarUsuario(Usuario u) {
+        r.eliminarUsuario(u, u.getId());
+    }
+
+    public int getTotalNodes() {
+        return r.getTotalNodes();
+    }
+
     public void guardarArchivo() {
         try (FileWriter fw = new FileWriter("usuarios.csv", true)) {
             BufferedWriter bw = new BufferedWriter(fw);
@@ -90,6 +98,14 @@ public class Arbol {
 
     }
 
+    public Raiz getR() {
+        return r;
+    }
+
+    public void setR(Raiz r) {
+        this.r = r;
+    }
+
     public static void createFile(File f, File file) {
         f.mkdir();
         try {
@@ -123,5 +139,11 @@ public class Arbol {
             }
         }
     }
+
+    public int height() {
+        return r.height();
+    }
+
+    
 
 }
