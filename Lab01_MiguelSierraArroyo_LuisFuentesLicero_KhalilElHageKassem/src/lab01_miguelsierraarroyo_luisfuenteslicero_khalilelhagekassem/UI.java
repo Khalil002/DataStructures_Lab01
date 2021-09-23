@@ -5,20 +5,11 @@
  */
 package lab01_miguelsierraarroyo_luisfuenteslicero_khalilelhagekassem;
 
-import java.awt.Color;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.border.Border;
-import lab01_miguelsierraarroyo_luisfuenteslicero_khalilelhagekassem.Usuario;
-import lab01_miguelsierraarroyo_luisfuenteslicero_khalilelhagekassem.Usuario;
+
 
 /**
  *
@@ -31,6 +22,7 @@ public class UI extends javax.swing.JFrame {
      */
     public UI() {
         initComponents();
+        
         this.setLocationRelativeTo(null);
         mostrarArbol.setVisible(false);
     }
@@ -454,7 +446,7 @@ public class UI extends javax.swing.JFrame {
     boolean emailRepetido = false;
 
     private void registrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarseActionPerformed
-
+        
         try {
 
             String nombre = jnombre.getText();
@@ -491,31 +483,21 @@ public class UI extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Ese email ya se encuentra en uso");
                 emailRepetido = false;
             } else {
-                if (nombre.equals("") || apellido.equals("") || email.equals("") || contraseña.equals("")) {
-                    JOptionPane.showMessageDialog(null, "Digite todos los campos");
-                } else if (contraseña.length() < 8) {
-                    JOptionPane.showMessageDialog(null, "Su contraseña debe ser mayor a 8 caracteres");
-                    jcontraseña.setText("");
-                } else {
-                    arbol.registrarUsuario(nombre, apellido, numeroIdentificacion, email, contraseña);
-                    cuenta.setVisible(true);
-                    cuenta.setLocationRelativeTo(null);
-                    registro.setVisible(false);
-                    arbol.getR().buscarUsuario(nextId).guardarArchivo();
-                    mostrarCuenta(arbol, nextId);
-
-                    jnombre.setText("");
-                    japellido.setText("");
-                    jnumero.setText("");
-                    jemail.setText("");
-                    jcontraseña.setText("");
-
-                }
-
+                u = new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, 0);
+                a.registrarUsuario(u);
+                System.out.println("bebe");
+                mostrarCuenta(u);
+                System.out.println("hola");
+                jnombre.setText("");
+                japellido.setText("");
+                jnumero.setText("");
+                jemail.setText("");
+                jcontraseña.setText("");
             }
 
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Error revise los campos " + ex.getStackTrace()[0] + " "+ex);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error revise los campos");
+            System.out.println(e);
         }
 
 

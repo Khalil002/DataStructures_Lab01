@@ -19,8 +19,7 @@ public class Raiz extends Nodo {
 
     public Raiz(String texto) {
         super(texto);
-        usuario = new Usuario("Usuario", "Origen", 0, "", "", 1000);
-        usuario.guardarArchivoOrigen();
+        usuario = null;
         bloque = new Bloque("0");
         
     }
@@ -127,6 +126,16 @@ public class Raiz extends Nodo {
     }
 
     void insertarUsuario(String nombre, String apellido, int numeroIdentificacion, String email, String contraseña, int id, float balance) {
+    public void registrarUsuario(Usuario u) {
+        if (usuario == null) {
+            usuario = u;
+        } else {
+            this.usuario = insertarUsuario(this.usuario, u);
+        }
+
+    }
+
+    public void insertarUsuario(String nombre, String apellido, int numeroIdentificacion, String email, String contraseña, int id, float balance) {
         this.usuario = insertarUsuario(this.usuario, new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, balance, id));
     }
 
@@ -142,8 +151,10 @@ public class Raiz extends Nodo {
     }
 
     private Usuario insertarUsuario(Usuario u, Usuario m) {
+        System.out.println("c");
         if (u == null) {
             return m;
+
         } else if (m.getId() < u.getId()) {
             u.setIzquierda(insertarUsuario(u.getIzquierda(), m));
         } else if (m.getId() > u.getId()) {
@@ -156,7 +167,6 @@ public class Raiz extends Nodo {
 
     private void updateHeight(Usuario n) {
         n.setAltura(1 + Math.max(n.getIzquierda().getAltura(), n.getDerecha().getAltura()));
-
     }
 
     private int height(Usuario n) {
