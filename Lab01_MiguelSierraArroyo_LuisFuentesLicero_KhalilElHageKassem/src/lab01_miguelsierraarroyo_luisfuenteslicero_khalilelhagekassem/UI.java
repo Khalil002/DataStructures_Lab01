@@ -5,20 +5,11 @@
  */
 package lab01_miguelsierraarroyo_luisfuenteslicero_khalilelhagekassem;
 
-import java.awt.Color;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.border.Border;
-import lab01_miguelsierraarroyo_luisfuenteslicero_khalilelhagekassem.Usuario;
-import lab01_miguelsierraarroyo_luisfuenteslicero_khalilelhagekassem.Usuario;
+
 
 /**
  *
@@ -31,6 +22,7 @@ public class UI extends javax.swing.JFrame {
      */
     public UI() {
         initComponents();
+        
         this.setLocationRelativeTo(null);
     }
 
@@ -393,7 +385,7 @@ public class UI extends javax.swing.JFrame {
     }//GEN-LAST:event_login1ActionPerformed
 
     private void registrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarseActionPerformed
-
+        
         try {
 
             String nombre = jnombre.getText();
@@ -408,26 +400,21 @@ public class UI extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Su contraseña debe ser mayor a 8 caracteres");
                 jcontraseña.setText("");
             } else {
-                u = new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, 0);
-                cuenta.setVisible(true);
-                cuenta.setLocationRelativeTo(null);
-                registro.setVisible(false);
-                u.guardarArchivo();
+                
+                a.registrarUsuario(nombre, apellido, numeroIdentificacion, email, contraseña);
+                System.out.println("bebe");
                 mostrarCuenta(u);
-
+                System.out.println("hola");
                 jnombre.setText("");
                 japellido.setText("");
                 jnumero.setText("");
                 jemail.setText("");
                 jcontraseña.setText("");
-                
-                if (r.usuario.getBalance>0){
-                    r.realizarTransaccion(r.usuario, u, 50);
-                }
             }
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error revise los campos");
+            System.out.println(e);
         }
 
 

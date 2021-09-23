@@ -16,7 +16,7 @@ public class Raiz extends Nodo {
 
     public Raiz(String texto) {
         super(texto);
-        usuario = new Usuario("Usuario", "Origen", 0, "", "", 1000);
+        usuario = null;
         bloque = new Bloque("0");
     }
 
@@ -38,15 +38,23 @@ public class Raiz extends Nodo {
     }
 
     public void registrarUsuario(String nombre, String apellido, int numeroIdentificacion, String email, String contraseña) {
-        this.usuario = insertarUsuario(this.usuario, new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, 500));
+        if (usuario == null) {
+            usuario = new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, 0);
+        } else {
+            Usuario nuevoUsuario = new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, 0);
+            this.usuario = insertarUsuario(this.usuario, nuevoUsuario);
+        }
+
     }
-    void insertarUsuario(String nombre, String apellido, int numeroIdentificacion, String email, String contraseña, int id, float balance) {
+
+    public void insertarUsuario(String nombre, String apellido, int numeroIdentificacion, String email, String contraseña, int id, float balance) {
         this.usuario = insertarUsuario(this.usuario, new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, balance, id));
     }
-    
-    public String preOrder(){
+
+    public String preOrder() {
         return preOrder(this.usuario);
     }
+
     private String preOrder(Usuario n) {
         if (n != null) {
             return n.getData() + "\n" + preOrder(n.getIzquierda()) + preOrder(n.getDerecha());
@@ -55,8 +63,10 @@ public class Raiz extends Nodo {
     }
 
     private Usuario insertarUsuario(Usuario u, Usuario m) {
+        System.out.println("c");
         if (u == null) {
             return m;
+
         } else if (m.getId() < u.getId()) {
             u.setIzquierda(insertarUsuario(u.getIzquierda(), m));
         } else if (m.getId() > u.getId()) {
@@ -66,10 +76,9 @@ public class Raiz extends Nodo {
         }
         return rebalance(u);
     }
-    
+
     private void updateHeight(Usuario n) {
         n.setAltura(1 + Math.max(n.getIzquierda().getAltura(), n.getDerecha().getAltura()));
-
     }
 
     private int height(Usuario n) {
@@ -123,8 +132,6 @@ public class Raiz extends Nodo {
         return z;
     }
 
-    
-
     public Usuario eliminarUsuario(Usuario u, int id) {
         if (u == null) {
             return u;
@@ -135,7 +142,7 @@ public class Raiz extends Nodo {
         } else {
             // node with only one child or no child
             if ((u.getIzquierda() == null) || (u.getDerecha() == null)) {
-                u = (u.getIzquierda() == null)? u.getDerecha() : u.getIzquierda();
+                u = (u.getIzquierda() == null) ? u.getDerecha() : u.getIzquierda();
             } else {
                 Usuario temp = mostLeftChild(u.getDerecha());
 
@@ -145,13 +152,12 @@ public class Raiz extends Nodo {
             }
 
         }
-        if(u != null){
+        if (u != null) {
             u = rebalance(u);
         }
         return u;
     }
 
-    
     Usuario mostLeftChild(Usuario u) {
         if (u.getIzquierda() != null) {
             return mostLeftChild(u.getIzquierda());
@@ -198,7 +204,5 @@ public class Raiz extends Nodo {
         }
         return balanceVerif == u1.getBalance();
     }
-
-    
 
 }
