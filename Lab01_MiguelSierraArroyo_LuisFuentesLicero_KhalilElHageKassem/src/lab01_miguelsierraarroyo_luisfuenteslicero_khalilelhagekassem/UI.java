@@ -433,6 +433,10 @@ public class UI extends javax.swing.JFrame {
             u = new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, 0);
             a.registrarUsuario(u);
 
+            
+            if (UsuarioGen.getBalance() > 0) {
+                a.realizarTransaccion(UsuarioGen, u, 50);
+            }
             mostrarCuenta(u);
             a.guardarArchivo();
 
@@ -441,10 +445,6 @@ public class UI extends javax.swing.JFrame {
             jnumero.setText("");
             jemail.setText("");
             jcontraseña.setText("");
-
-            if (UsuarioGen.getBalance() > 0) {
-                a.realizarTransaccion(UsuarioGen, u, 50);
-            }
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error revise los campos");

@@ -299,6 +299,8 @@ public class Raiz extends Nodo {
     }
 
     private boolean verificarTransaccion(Usuario u1, Bloque bloque) {
+        if(u1.getId()==0)return true;
+        
         Bloque p = bloque;
         float balanceVerif = 0;
         while (p != null) {
