@@ -30,8 +30,8 @@ public class Arbol {
         r.buscarUsuario(uID);
     }
 
-    public void registrarUsuario(String nombre, String apellido, int numeroIdentificacion, String email, String contraseña) {
-        r.registrarUsuario(nombre, apellido, numeroIdentificacion, email, contraseña);
+    public void registrarUsuario(Usuario u) {
+        r.registrarUsuario(u);
     }
 
     public void realizarTransaccion(Usuario r1, Usuario r2, float dinero) {

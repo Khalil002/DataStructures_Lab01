@@ -37,12 +37,11 @@ public class Raiz extends Nodo {
         return null;
     }
 
-    public void registrarUsuario(String nombre, String apellido, int numeroIdentificacion, String email, String contraseña) {
+    public void registrarUsuario(Usuario u) {
         if (usuario == null) {
-            usuario = new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, 0);
+            usuario = u;
         } else {
-            Usuario nuevoUsuario = new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, 0);
-            this.usuario = insertarUsuario(this.usuario, nuevoUsuario);
+            this.usuario = insertarUsuario(this.usuario, u);
         }
 
     }

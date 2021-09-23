@@ -400,8 +400,8 @@ public class UI extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Su contraseña debe ser mayor a 8 caracteres");
                 jcontraseña.setText("");
             } else {
-                
-                a.registrarUsuario(nombre, apellido, numeroIdentificacion, email, contraseña);
+                u = new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, 0);
+                a.registrarUsuario(u);
                 System.out.println("bebe");
                 mostrarCuenta(u);
                 System.out.println("hola");
