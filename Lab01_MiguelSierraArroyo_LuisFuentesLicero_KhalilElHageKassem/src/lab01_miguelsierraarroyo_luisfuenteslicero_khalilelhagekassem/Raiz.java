@@ -279,12 +279,12 @@ public class Raiz extends Nodo {
     }
 
     public void realizarTransaccion(Usuario r1, Usuario r2, float dinero) {
-        transaccion(r1, r2, dinero, bloque);
+        transaccion(r1, r2, dinero, this.bloque);
         totalNodes++;
     }
 
     private void transaccion(Usuario u1, Usuario u2, float dinero, Bloque bloque) {
-        if (verificarTransaccion(u1)) {
+        if (verificarTransaccion(u1, bloque)) {
             Transaccion t = new Transaccion(u1, u2, dinero);
             Bloque p = bloque;
             Bloque pnext = bloque.getBloqueSiguiente();
@@ -292,14 +292,13 @@ public class Raiz extends Nodo {
                 p = pnext;
                 pnext = p.getBloqueSiguiente();
             }
-            ;
             if (p.addTransaccion(t)) {
                 totalNodes++;
             }
         }
     }
 
-    private boolean verificarTransaccion(Usuario u1) {
+    private boolean verificarTransaccion(Usuario u1, Bloque bloque) {
         Bloque p = bloque;
         float balanceVerif = 0;
         while (p != null) {
