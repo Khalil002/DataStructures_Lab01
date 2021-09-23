@@ -371,6 +371,7 @@ public class UI extends javax.swing.JFrame {
 
     int auxiliar = 0;
     Arbol arbol = new Arbol();
+    Usuario u;
 
     private void ingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresarActionPerformed
 
@@ -395,7 +396,7 @@ public class UI extends javax.swing.JFrame {
                     cuenta.setVisible(true);
                     cuenta.setLocationRelativeTo(null);
                     this.setVisible(false);
-                    mostrarCuenta(arbol, id);
+                    mostrarCuenta(u);
                     auxiliar++;
                     
                     if (id==1) {
@@ -484,10 +485,10 @@ public class UI extends javax.swing.JFrame {
                 emailRepetido = false;
             } else {
                 u = new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, 0);
-                a.registrarUsuario(u);
-                System.out.println("bebe");
+                arbol.registrarUsuario(u);
+                
                 mostrarCuenta(u);
-                System.out.println("hola");
+
                 jnombre.setText("");
                 japellido.setText("");
                 jnumero.setText("");
@@ -576,10 +577,10 @@ public class UI extends javax.swing.JFrame {
         showArbol.setVisible(false);
     }//GEN-LAST:event_cerrarActionPerformed
 
-    public void mostrarCuenta(Arbol arbol, int idSearch) {
-        jid.setText(String.valueOf(arbol.getR().buscarId(idSearch)));
-        jbalance.setText(String.valueOf(arbol.getR().buscarBalance(idSearch)) + " $");
-        jnom.setText(arbol.getR().buscarNombre(idSearch) + " " + arbol.getR().buscarApellido(idSearch));
+    public void mostrarCuenta(Usuario u) {
+        jid.setText(String.valueOf(u.getId()));
+        jbalance.setText(String.valueOf(u.getBalance()) + " $");
+        jnom.setText(u.getNombre() + " " + u.getApellido());
     }
 
     /**

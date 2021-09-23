@@ -53,61 +53,7 @@ public class Usuario extends Nodo {
         this.balance = balance;
     }
 
-    public void guardarArchivo() {
-        try (FileWriter fw = new FileWriter("usuarios.csv", true)) {
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(this.nombre + "," + this.apellido + "," + this.numeroIdentificacion + "," + this.email + "," + this.contraseña + "," + this.id + "," + this.balance);
-            bw.newLine();
-            bw.flush();
-            bw.close();
-            fw.close();
-
-        } catch (Exception e) {
-            System.out.println("error");
-        }
-    }
-
-    public void guardarArchivoOrigen() {
-        try (FileWriter fw = new FileWriter("usuarios.csv", true)) {
-            BufferedWriter bw = new BufferedWriter(fw);
-            abrirArchivo();
-            if (this.nombre.equals("")) {
-                bw.write(this.nombre + "," + this.apellido + "," + this.numeroIdentificacion + "," + this.email + "," + this.contraseña + "," + this.id + "," + this.balance);
-                bw.newLine();
-                bw.flush();
-                bw.close();
-                fw.close();
-            }
-
-        } catch (Exception e) {
-            System.out.println("error");
-        }
-    }
-    
-    public void abrirArchivo() {
-        File f = new File("usuarios.csv");
-
-        try {
-            Scanner in = new Scanner(f);
-            while (in.hasNextLine()) {
-                String linea = in.nextLine();
-                String datos[] = linea.split(",");
-                this.nombre = datos[0];
-                this.apellido = datos[1];
-                this.numeroIdentificacion = Integer.parseInt(datos[2]);
-                this.email = datos[3];
-                this.contraseña = datos[4];
-                this.id = Integer.parseInt(datos[5]);
-                this.balance = Float.parseFloat(datos[6]);
-            }
-
-        } catch (Exception ex) {
-            System.out.println("error");
-        }
-    }
-
     public int getNextId() {
-        abrirArchivo();
         return this.id + 1;
     }
     
