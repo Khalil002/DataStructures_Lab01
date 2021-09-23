@@ -12,6 +12,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -29,8 +31,6 @@ public class Arbol {
     public Usuario buscarUsuario(int uID) {
         return r.buscarUsuario(uID);
     }
-
-    
 
     public void registrarUsuario(Usuario u) {
         r.registrarUsuario(u);
@@ -61,7 +61,7 @@ public class Arbol {
         } catch (IOException ex) {
             System.out.println("Error en crear el archivo");
         }
-        try ( FileWriter fw = new FileWriter(file, false)) {
+        try (FileWriter fw = new FileWriter(file, false)) {
             BufferedWriter bw = new BufferedWriter(fw);
 
             bw.write(r.preOrder());
@@ -73,14 +73,14 @@ public class Arbol {
             System.out.println("error");
 
         }
-        
+
         File file2 = new File(folder, "transacciones.csv");
         try {
             file2.createNewFile();
         } catch (IOException ex) {
             System.out.println("Error en crear el archivo");
         }
-        try ( FileWriter fw = new FileWriter(file2, false)) {
+        try (FileWriter fw = new FileWriter(file2, false)) {
             BufferedWriter bw = new BufferedWriter(fw);
 
             bw.write(r.recorrerBloques());
@@ -91,6 +91,34 @@ public class Arbol {
         } catch (Exception e) {
             System.out.println("error");
 
+        }
+
+    }
+
+    public void actualizarArchivo(DefaultTableModel model, File file, JTable tabla) {
+
+        File f = new File("usuarios.csv");
+
+        if (!file.exists()) {
+            f.mkdir();
+            try {
+                file.createNewFile();
+            } catch (IOException ex) {
+                System.out.println("error");
+            }
+        }
+        try (FileWriter fw = new FileWriter(file.getAbsoluteFile())) {
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (int i = 0; i < tabla.getRowCount(); i++) {
+                bw.write(tabla.getValueAt(i, 0) + "," + tabla.getValueAt(i, 1) + "," + tabla.getValueAt(i, 2) + "," + tabla.getValueAt(i, 3) + "," + tabla.getValueAt(i, 4) + "," + tabla.getValueAt(i, 5) + "," + tabla.getValueAt(i, 6));
+                bw.newLine();
+            }
+            bw.flush();
+            bw.close();
+            fw.close();
+
+        } catch (Exception e) {
+            System.out.println("error");
         }
 
     }
@@ -188,7 +216,7 @@ public class Arbol {
                 System.out.println(ex + "bruh?");
             }
         }
-        
+
         File file1 = new File(folder, "transacciones.csv");
         if (!file1.exists()) {
             try {

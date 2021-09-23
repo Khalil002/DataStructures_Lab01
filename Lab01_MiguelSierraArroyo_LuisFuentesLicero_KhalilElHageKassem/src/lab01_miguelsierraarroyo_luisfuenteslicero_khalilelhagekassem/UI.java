@@ -12,7 +12,11 @@ import java.io.IOException;
 import java.util.Scanner;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.RowSorter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -65,6 +69,8 @@ public class UI extends javax.swing.JFrame {
         cuentaMaster = new javax.swing.JFrame();
         jPanel4 = new javax.swing.JPanel();
         jnom1 = new javax.swing.JLabel();
+        eliminarUsuario1 = new javax.swing.JButton();
+        ordenar = new javax.swing.JButton();
         jid1 = new javax.swing.JLabel();
         jbalance1 = new javax.swing.JLabel();
         logout1 = new javax.swing.JButton();
@@ -252,11 +258,27 @@ public class UI extends javax.swing.JFrame {
         jnom1.setFont(new java.awt.Font("Consolas", 0, 24)); // NOI18N
         jPanel4.add(jnom1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 110, 300, 40));
 
+        eliminarUsuario1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Eliminar usuario.png"))); // NOI18N
+        eliminarUsuario1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarUsuario1ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(eliminarUsuario1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 540, 120, 40));
+
+        ordenar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ordenar btn.png"))); // NOI18N
+        ordenar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ordenarActionPerformed(evt);
+            }
+        });
+        jPanel4.add(ordenar, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 540, 120, 40));
+
         jid1.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
-        jPanel4.add(jid1, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 120, 150, 20));
+        jPanel4.add(jid1, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 110, 150, 30));
 
         jbalance1.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
-        jPanel4.add(jbalance1, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 150, 150, 20));
+        jPanel4.add(jbalance1, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 150, 150, 30));
 
         logout1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/boton cerrar sesion.png"))); // NOI18N
         logout1.setBorder(null);
@@ -438,7 +460,7 @@ public class UI extends javax.swing.JFrame {
     Usuario UsuarioGen = a.buscarUsuario(0);
     Usuario u;
 
-    public Arbol getArbol(){
+    public Arbol getArbol() {
         return a;
     }
 
@@ -668,16 +690,45 @@ public class UI extends javax.swing.JFrame {
         jcontra.setText("");
     }//GEN-LAST:event_logout1ActionPerformed
 
+    private void ordenarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordenarActionPerformed
+        DefaultTableModel tablaPedidos = (DefaultTableModel) this.tabla1.getModel();
+        RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(tablaPedidos);
+        tabla1.setRowSorter(sorter);
+        tabla1.getRowSorter().toggleSortOrder(0);
+    }//GEN-LAST:event_ordenarActionPerformed
+
+    private void eliminarUsuario1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarUsuario1ActionPerformed
+        DefaultTableModel model = (DefaultTableModel) tabla1.getModel();
+        File folder = new File("data");
+        File file = new File(folder, "usuarios.csv");
+
+        try {
+
+            int selecteRow = tabla1.getSelectedRow();
+            if (selecteRow != -1 && Integer.parseInt((String) tabla1.getValueAt(selecteRow, 0)) != 0) {
+                model.removeRow(selecteRow);
+                a.actualizarArchivo(model, file, tabla1);
+            } else if (Integer.parseInt((String) tabla1.getValueAt(selecteRow, 0)) == 0) {
+                JOptionPane.showMessageDialog(null, "No puede borrar el usuario del administrador");
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No ha seleccionado nada");
+        }
+
+    }//GEN-LAST:event_eliminarUsuario1ActionPerformed
+
     public void mostrarCuenta(Usuario u) {
         jid.setText(String.valueOf(u.getId()));
         jbalance.setText(String.valueOf(u.getBalance()) + " $");
         jnom.setText(u.getNombre() + " " + u.getApellido());
 
         cuenta.setVisible(true);
+        cuenta.setLocationRelativeTo(null);
         registro.setVisible(false);
         this.setVisible(false);
     }
-    
+
     public void mostrarCuentaAdmin(Usuario u) {
         jid1.setText(String.valueOf(u.getId()));
         jbalance1.setText(String.valueOf(u.getBalance()) + " $");
@@ -729,6 +780,7 @@ public class UI extends javax.swing.JFrame {
     private javax.swing.JFrame cuentaMaster;
     private javax.swing.JTextField descripcion;
     private javax.swing.JTextField destino;
+    private javax.swing.JButton eliminarUsuario1;
     private javax.swing.JLabel fondo;
     private javax.swing.JButton ingresar;
     private javax.swing.JLabel jLabel1;
@@ -761,6 +813,7 @@ public class UI extends javax.swing.JFrame {
     private javax.swing.JButton logout;
     private javax.swing.JButton logout1;
     private javax.swing.JTextField monto;
+    private javax.swing.JButton ordenar;
     private javax.swing.JButton realizarTransaccion;
     private javax.swing.JButton registrarse;
     private javax.swing.JFrame registro;
