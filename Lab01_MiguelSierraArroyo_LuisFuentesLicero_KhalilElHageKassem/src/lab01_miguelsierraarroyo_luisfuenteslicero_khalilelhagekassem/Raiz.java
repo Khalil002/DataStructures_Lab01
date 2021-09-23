@@ -5,6 +5,9 @@
  */
 package lab01_miguelsierraarroyo_luisfuenteslicero_khalilelhagekassem;
 
+import java.io.File;
+import java.util.Scanner;
+
 /**
  *
  * @author khali
@@ -17,6 +20,7 @@ public class Raiz extends Nodo {
     public Raiz(String texto) {
         super(texto);
         usuario = new Usuario("Usuario", "Origen", 0, "", "", 1000);
+        usuario.guardarArchivoOrigen();
         bloque = new Bloque("0");
     }
 
@@ -37,16 +41,98 @@ public class Raiz extends Nodo {
         return null;
     }
 
+    public String buscarNombre(int uID) {
+        File f = new File("usuarios.csv");
+        try {
+            Scanner in = new Scanner(f);
+            while (in.hasNextLine()) {
+                String linea = in.nextLine();
+                String datos[] = linea.split(",");
+                String nombre = datos[0];
+                int id = Integer.parseInt(datos[5]);
+                if (uID == id) {
+                    return nombre;
+                }
+            }
+
+        } catch (Exception ex) {
+            System.out.println("error");
+        }
+        return null;
+    }
+
+    public String buscarApellido(int uID) {
+        File f = new File("usuarios.csv");
+        try {
+            Scanner in = new Scanner(f);
+            while (in.hasNextLine()) {
+                String linea = in.nextLine();
+                String datos[] = linea.split(",");
+                String apellido = datos[1];
+                int id = Integer.parseInt(datos[5]);
+                if (uID == id) {
+                    return apellido;
+                }
+            }
+
+        } catch (Exception ex) {
+            System.out.println("error");
+        }
+        return null;
+    }
+
+    public int buscarId(int uID) {
+        File f = new File("usuarios.csv");
+
+        try {
+            Scanner in = new Scanner(f);
+            while (in.hasNextLine()) {
+                String linea = in.nextLine();
+                String datos[] = linea.split(",");
+                int id = Integer.parseInt(datos[5]);
+                if (uID == id) {
+                    return id;
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println("error");
+        }
+        return 0;
+    }
+
+    public float buscarBalance(int uID) {
+        File f = new File("usuarios.csv");
+
+        try {
+            Scanner in = new Scanner(f);
+            while (in.hasNextLine()) {
+                String linea = in.nextLine();
+                String datos[] = linea.split(",");
+                int id = Integer.parseInt(datos[5]);
+                float balance = Float.parseFloat(datos[6]);
+                if (uID == id) {
+                    return balance;
+                }
+            }
+
+        } catch (Exception ex) {
+            System.out.println("error");
+        }
+        return 0;
+    }
+
     public void registrarUsuario(String nombre, String apellido, int numeroIdentificacion, String email, String contraseña) {
         this.usuario = insertarUsuario(this.usuario, new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, 500));
     }
+
     void insertarUsuario(String nombre, String apellido, int numeroIdentificacion, String email, String contraseña, int id, float balance) {
         this.usuario = insertarUsuario(this.usuario, new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, balance, id));
     }
-    
-    public String preOrder(){
+
+    public String preOrder() {
         return preOrder(this.usuario);
     }
+
     private String preOrder(Usuario n) {
         if (n != null) {
             return n.getData() + "\n" + preOrder(n.getIzquierda()) + preOrder(n.getDerecha());
@@ -66,7 +152,7 @@ public class Raiz extends Nodo {
         }
         return rebalance(u);
     }
-    
+
     private void updateHeight(Usuario n) {
         n.setAltura(1 + Math.max(n.getIzquierda().getAltura(), n.getDerecha().getAltura()));
 
@@ -123,8 +209,6 @@ public class Raiz extends Nodo {
         return z;
     }
 
-    
-
     public Usuario eliminarUsuario(Usuario u, int id) {
         if (u == null) {
             return u;
@@ -135,7 +219,7 @@ public class Raiz extends Nodo {
         } else {
             // node with only one child or no child
             if ((u.getIzquierda() == null) || (u.getDerecha() == null)) {
-                u = (u.getIzquierda() == null)? u.getDerecha() : u.getIzquierda();
+                u = (u.getIzquierda() == null) ? u.getDerecha() : u.getIzquierda();
             } else {
                 Usuario temp = mostLeftChild(u.getDerecha());
 
@@ -145,13 +229,12 @@ public class Raiz extends Nodo {
             }
 
         }
-        if(u != null){
+        if (u != null) {
             u = rebalance(u);
         }
         return u;
     }
 
-    
     Usuario mostLeftChild(Usuario u) {
         if (u.getIzquierda() != null) {
             return mostLeftChild(u.getIzquierda());
@@ -198,7 +281,5 @@ public class Raiz extends Nodo {
         }
         return balanceVerif == u1.getBalance();
     }
-
-    
 
 }

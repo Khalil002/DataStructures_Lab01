@@ -27,6 +27,10 @@ public class Arbol {
         r.buscarUsuario(uID);
     }
 
+    public Raiz getR() {
+        return r;
+    }
+
     public void registrarUsuario(String nombre, String apellido, int numeroIdentificacion, String email, String contraseña) {
         r.registrarUsuario(nombre, apellido, numeroIdentificacion, email, contraseña);
     }

@@ -32,6 +32,7 @@ public class UI extends javax.swing.JFrame {
     public UI() {
         initComponents();
         this.setLocationRelativeTo(null);
+        mostrarArbol.setVisible(false);
     }
 
     /**
@@ -69,7 +70,13 @@ public class UI extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         descripcion = new javax.swing.JTextField();
+        mostrarArbol = new javax.swing.JButton();
         fondo = new javax.swing.JLabel();
+        showArbol = new javax.swing.JFrame();
+        jPanel4 = new javax.swing.JPanel();
+        cerrar = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jusuario = new javax.swing.JTextField();
         show = new javax.swing.JButton();
@@ -232,6 +239,15 @@ public class UI extends javax.swing.JFrame {
         descripcion.setBorder(null);
         jPanel3.add(descripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 350, 350, 30));
 
+        mostrarArbol.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/boton mostrar arbol.png"))); // NOI18N
+        mostrarArbol.setBorder(null);
+        mostrarArbol.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mostrarArbolActionPerformed(evt);
+            }
+        });
+        jPanel3.add(mostrarArbol, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 110, 80));
+
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/cuenta.png"))); // NOI18N
         jPanel3.add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1070, 620));
 
@@ -244,6 +260,48 @@ public class UI extends javax.swing.JFrame {
         cuentaLayout.setVerticalGroup(
             cuentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        showArbol.setResizable(false);
+        showArbol.setSize(new java.awt.Dimension(1080, 660));
+
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/boton de cerrar.png"))); // NOI18N
+        cerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cerrarActionPerformed(evt);
+            }
+        });
+        jPanel4.add(cerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 550, 350, 40));
+
+        jPanel5.setOpaque(false);
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 920, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 460, Short.MAX_VALUE)
+        );
+
+        jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, 920, 460));
+
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/pagina para mostrar arbol.png"))); // NOI18N
+        jPanel4.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1070, 620));
+
+        javax.swing.GroupLayout showArbolLayout = new javax.swing.GroupLayout(showArbol.getContentPane());
+        showArbol.getContentPane().setLayout(showArbolLayout);
+        showArbolLayout.setHorizontalGroup(
+            showArbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 1072, Short.MAX_VALUE)
+        );
+        showArbolLayout.setVerticalGroup(
+            showArbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -320,9 +378,7 @@ public class UI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     int auxiliar = 0;
-    Arbol a = new Arbol();
-    Raiz r = a.r;
-    Usuario u;
+    Arbol arbol = new Arbol();
 
     private void ingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresarActionPerformed
 
@@ -347,10 +403,13 @@ public class UI extends javax.swing.JFrame {
                     cuenta.setVisible(true);
                     cuenta.setLocationRelativeTo(null);
                     this.setVisible(false);
-
-                    u = new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, balance, id);
-                    mostrarCuenta(u);
+                    mostrarCuenta(arbol, id);
                     auxiliar++;
+                    
+                    if (id==1) {
+                        mostrarArbol.setVisible(true);
+                    }
+                    
                 }
 
             }
@@ -365,7 +424,7 @@ public class UI extends javax.swing.JFrame {
             auxiliar = 0;
 
         } catch (Exception ex) {
-            System.out.println("error " + ex);
+            System.out.println("error");
         }
 
     }//GEN-LAST:event_ingresarActionPerformed
@@ -392,6 +451,8 @@ public class UI extends javax.swing.JFrame {
         jcontraseña.setText("");
     }//GEN-LAST:event_login1ActionPerformed
 
+    boolean emailRepetido = false;
+
     private void registrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarseActionPerformed
 
         try {
@@ -401,33 +462,60 @@ public class UI extends javax.swing.JFrame {
             int numeroIdentificacion = Integer.parseInt(jnumero.getText());
             String email = jemail.getText();
             String contraseña = String.valueOf(jcontraseña.getPassword());
+            int nextId = 0;
 
-            if (nombre.equals("") || apellido.equals("") || email.equals("") || contraseña.equals("")) {
-                JOptionPane.showMessageDialog(null, "Digite todos los campos");
-            } else if (contraseña.length() < 8) {
-                JOptionPane.showMessageDialog(null, "Su contraseña debe ser mayor a 8 caracteres");
-                jcontraseña.setText("");
-            } else {
-                u = new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, 0);
-                cuenta.setVisible(true);
-                cuenta.setLocationRelativeTo(null);
-                registro.setVisible(false);
-                u.guardarArchivo();
-                mostrarCuenta(u);
+            File f = new File("usuarios.csv");
+            String usuario = jusuario.getText();
+            String contra = String.valueOf(jcontra.getPassword());
+            try {
 
-                jnombre.setText("");
-                japellido.setText("");
-                jnumero.setText("");
-                jemail.setText("");
-                jcontraseña.setText("");
-                
-                if (r.usuario.getBalance>0){
-                    r.realizarTransaccion(r.usuario, u, 50);
+                Scanner in = new Scanner(f);
+                while (in.hasNextLine()) {
+                    String linea = in.nextLine();
+                    String datos[] = linea.split(",");
+                    String emailC = datos[3];
+                    nextId = Integer.parseInt(datos[5]);
+
+                    if (emailC.equals(email)) {
+                        emailRepetido = true;
+                    }
+
                 }
+                nextId++;
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Error revise los campos " + ex.getStackTrace()[0] + " "+ex);
             }
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error revise los campos");
+            if (emailRepetido == true) {
+                JOptionPane.showMessageDialog(null, "Ese email ya se encuentra en uso");
+                emailRepetido = false;
+            } else {
+                if (nombre.equals("") || apellido.equals("") || email.equals("") || contraseña.equals("")) {
+                    JOptionPane.showMessageDialog(null, "Digite todos los campos");
+                } else if (contraseña.length() < 8) {
+                    JOptionPane.showMessageDialog(null, "Su contraseña debe ser mayor a 8 caracteres");
+                    jcontraseña.setText("");
+                } else {
+                    arbol.registrarUsuario(nombre, apellido, numeroIdentificacion, email, contraseña);
+                    cuenta.setVisible(true);
+                    cuenta.setLocationRelativeTo(null);
+                    registro.setVisible(false);
+                    arbol.getR().buscarUsuario(nextId).guardarArchivo();
+                    mostrarCuenta(arbol, nextId);
+
+                    jnombre.setText("");
+                    japellido.setText("");
+                    jnumero.setText("");
+                    jemail.setText("");
+                    jcontraseña.setText("");
+
+                }
+
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error revise los campos " + ex.getStackTrace()[0] + " "+ex);
         }
 
 
@@ -443,6 +531,7 @@ public class UI extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         jusuario.setText("");
         jcontra.setText("");
+        mostrarArbol.setVisible(false);
 
     }//GEN-LAST:event_logoutActionPerformed
 
@@ -493,13 +582,22 @@ public class UI extends javax.swing.JFrame {
     }//GEN-LAST:event_show1ActionPerformed
 
     private void realizarTransaccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_realizarTransaccionActionPerformed
-        
+        // TODO add your handling code here:
     }//GEN-LAST:event_realizarTransaccionActionPerformed
-    
-    public void mostrarCuenta(Usuario u) {
-        jid.setText(String.valueOf(u.getId()));
-        jbalance.setText(String.valueOf(u.getBalance()));
-        jnom.setText(u.getNombre() + " " + u.getApellido());
+
+    private void mostrarArbolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mostrarArbolActionPerformed
+        showArbol.setVisible(true);
+        showArbol.setLocationRelativeTo(null);
+    }//GEN-LAST:event_mostrarArbolActionPerformed
+
+    private void cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarActionPerformed
+        showArbol.setVisible(false);
+    }//GEN-LAST:event_cerrarActionPerformed
+
+    public void mostrarCuenta(Arbol arbol, int idSearch) {
+        jid.setText(String.valueOf(arbol.getR().buscarId(idSearch)));
+        jbalance.setText(String.valueOf(arbol.getR().buscarBalance(idSearch)) + " $");
+        jnom.setText(arbol.getR().buscarNombre(idSearch) + " " + arbol.getR().buscarApellido(idSearch));
     }
 
     /**
@@ -539,6 +637,7 @@ public class UI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cerrar;
     private javax.swing.JFrame cuenta;
     private javax.swing.JTextField descripcion;
     private javax.swing.JTextField destino;
@@ -548,9 +647,12 @@ public class UI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField japellido;
@@ -567,12 +669,14 @@ public class UI extends javax.swing.JFrame {
     private javax.swing.JButton login1;
     private javax.swing.JButton logout;
     private javax.swing.JTextField monto;
+    private javax.swing.JButton mostrarArbol;
     private javax.swing.JButton realizarTransaccion;
     private javax.swing.JButton registrarse;
     private javax.swing.JFrame registro;
     private javax.swing.JButton salir;
     private javax.swing.JButton show;
     private javax.swing.JButton show1;
+    private javax.swing.JFrame showArbol;
     private javax.swing.JButton signup;
     private javax.swing.JButton signup1;
     // End of variables declaration//GEN-END:variables
