@@ -22,6 +22,7 @@ public class Raiz extends Nodo {
         usuario = new Usuario("Usuario", "Origen", 0, "", "", 1000);
         usuario.guardarArchivoOrigen();
         bloque = new Bloque("0");
+        
     }
 
     public Usuario buscarUsuario(int uID) {
