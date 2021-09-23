@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.Scanner;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -24,9 +25,7 @@ public class UI extends javax.swing.JFrame {
      */
     public UI() {
         initComponents();
-
         this.setLocationRelativeTo(null);
-        mostrarArbol.setVisible(false);
     }
 
     /**
@@ -61,15 +60,21 @@ public class UI extends javax.swing.JFrame {
         realizarTransaccion = new javax.swing.JButton();
         monto = new javax.swing.JTextField();
         destino = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         descripcion = new javax.swing.JTextField();
-        mostrarArbol = new javax.swing.JButton();
         fondo = new javax.swing.JLabel();
-        showArbol = new javax.swing.JFrame();
+        cuentaMaster = new javax.swing.JFrame();
         jPanel4 = new javax.swing.JPanel();
-        cerrar = new javax.swing.JButton();
-        jPanel5 = new javax.swing.JPanel();
+        jnom1 = new javax.swing.JLabel();
+        jid1 = new javax.swing.JLabel();
+        jbalance1 = new javax.swing.JLabel();
+        logout1 = new javax.swing.JButton();
+        salir1 = new javax.swing.JButton();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tabla1 = new javax.swing.JTable();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tabla2 = new javax.swing.JTable();
+        showArbol = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jusuario = new javax.swing.JTextField();
@@ -220,27 +225,9 @@ public class UI extends javax.swing.JFrame {
         destino.setBorder(null);
         jPanel3.add(destino, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 180, 350, 30));
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
-        jTextArea1.setRows(5);
-        jTextArea1.setBorder(null);
-        jScrollPane1.setViewportView(jTextArea1);
-
-        jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 440, 310, 140));
-
         descripcion.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
         descripcion.setBorder(null);
         jPanel3.add(descripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 350, 350, 30));
-
-        mostrarArbol.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/boton mostrar arbol.png"))); // NOI18N
-        mostrarArbol.setBorder(null);
-        mostrarArbol.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mostrarArbolActionPerformed(evt);
-            }
-        });
-        jPanel3.add(mostrarArbol, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 110, 80));
 
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/cuenta.png"))); // NOI18N
         jPanel3.add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1070, 620));
@@ -256,45 +243,120 @@ public class UI extends javax.swing.JFrame {
             .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        showArbol.setResizable(false);
-        showArbol.setSize(new java.awt.Dimension(1080, 660));
+        cuentaMaster.setResizable(false);
+        cuentaMaster.setSize(new java.awt.Dimension(1080, 660));
 
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/boton de cerrar.png"))); // NOI18N
-        cerrar.addActionListener(new java.awt.event.ActionListener() {
+        jnom1.setBackground(new java.awt.Color(0, 0, 102));
+        jnom1.setFont(new java.awt.Font("Consolas", 0, 24)); // NOI18N
+        jPanel4.add(jnom1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 110, 300, 40));
+
+        jid1.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        jPanel4.add(jid1, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 120, 150, 20));
+
+        jbalance1.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        jPanel4.add(jbalance1, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 150, 150, 20));
+
+        logout1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/boton cerrar sesion.png"))); // NOI18N
+        logout1.setBorder(null);
+        logout1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cerrarActionPerformed(evt);
+                logout1ActionPerformed(evt);
             }
         });
-        jPanel4.add(cerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 550, 350, 40));
+        jPanel4.add(logout1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 390, 110, 80));
 
-        jPanel5.setOpaque(false);
+        salir1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/boton salir.png"))); // NOI18N
+        salir1.setBorder(null);
+        salir1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salir1ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(salir1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 520, 110, 80));
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 920, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 460, Short.MAX_VALUE)
-        );
+        tabla1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, 920, 460));
+            },
+            new String [] {
+                "ID", "Nombre", "Apellido", "NumIdentificacion", "Email", "Contraseña", "Balance"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, true, false, false, false, false, false
+            };
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/pagina para mostrar arbol.png"))); // NOI18N
-        jPanel4.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1070, 620));
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tabla1);
+        if (tabla1.getColumnModel().getColumnCount() > 0) {
+            tabla1.getColumnModel().getColumn(0).setResizable(false);
+            tabla1.getColumnModel().getColumn(1).setResizable(false);
+            tabla1.getColumnModel().getColumn(2).setResizable(false);
+            tabla1.getColumnModel().getColumn(3).setResizable(false);
+            tabla1.getColumnModel().getColumn(4).setResizable(false);
+            tabla1.getColumnModel().getColumn(5).setResizable(false);
+            tabla1.getColumnModel().getColumn(6).setResizable(false);
+        }
 
-        javax.swing.GroupLayout showArbolLayout = new javax.swing.GroupLayout(showArbol.getContentPane());
-        showArbol.getContentPane().setLayout(showArbolLayout);
+        jTabbedPane1.addTab("Usuarios", jScrollPane2);
+
+        tabla2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Cuenta destino", "Cuenta origen", "ID", "Monto transferido"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(tabla2);
+        if (tabla2.getColumnModel().getColumnCount() > 0) {
+            tabla2.getColumnModel().getColumn(0).setResizable(false);
+            tabla2.getColumnModel().getColumn(1).setResizable(false);
+            tabla2.getColumnModel().getColumn(2).setResizable(false);
+            tabla2.getColumnModel().getColumn(3).setResizable(false);
+        }
+
+        jTabbedPane1.addTab("Transacciones", jScrollPane3);
+
+        javax.swing.GroupLayout showArbolLayout = new javax.swing.GroupLayout(showArbol);
+        showArbol.setLayout(showArbolLayout);
         showArbolLayout.setHorizontalGroup(
             showArbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 1072, Short.MAX_VALUE)
+            .addGap(0, 638, Short.MAX_VALUE)
         );
         showArbolLayout.setVerticalGroup(
             showArbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 234, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Mostrar arbol", showArbol);
+
+        jPanel4.add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 230, 640, 260));
+
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondo cuenta admin.png"))); // NOI18N
+        jPanel4.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1070, 620));
+
+        javax.swing.GroupLayout cuentaMasterLayout = new javax.swing.GroupLayout(cuentaMaster.getContentPane());
+        cuentaMaster.getContentPane().setLayout(cuentaMasterLayout);
+        cuentaMasterLayout.setHorizontalGroup(
+            cuentaMasterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 1072, Short.MAX_VALUE)
+        );
+        cuentaMasterLayout.setVerticalGroup(
+            cuentaMasterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -376,6 +438,9 @@ public class UI extends javax.swing.JFrame {
     Usuario UsuarioGen = a.buscarUsuario(0);
     Usuario u;
 
+    public Arbol getArbol(){
+        return a;
+    }
 
     private void ingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresarActionPerformed
         int id = Integer.parseInt(jusuario.getText());
@@ -388,12 +453,67 @@ public class UI extends javax.swing.JFrame {
             if (!(u.getContraseña().equals(contra))) {
                 JOptionPane.showMessageDialog(null, "Contra incorrecta!");
             } else {
-                mostrarCuenta(u);
+
+                if (id == 0) {
+                    cuentaMaster.setVisible(true);
+                    cuentaMaster.setLocationRelativeTo(null);
+                    this.setVisible(false);
+                    crearTablaUsuarios();
+                    crearTablaTransacciones();
+                    mostrarCuentaAdmin(u);
+
+                } else {
+                    mostrarCuenta(u);
+                }
+
             }
         }
 
 
     }//GEN-LAST:event_ingresarActionPerformed
+
+    public void crearTablaUsuarios() {
+
+        DefaultTableModel model = (DefaultTableModel) tabla1.getModel();
+        model.setRowCount(0);
+
+        File folder = new File("data");
+        File file = new File(folder, "usuarios.csv");
+
+        try (Scanner sc = new Scanner(file)) {
+            while (sc.hasNextLine()) {
+                String linea = sc.nextLine();
+                String data[] = linea.split(",");
+                model.addRow(new Object[]{data[0], data[1], data[2], data[3], data[4], data[5], data[6]});
+            }
+
+        } catch (Exception ex) {
+            System.out.println("error " + ex);
+        }
+
+    }
+
+    public void crearTablaTransacciones() {
+
+        DefaultTableModel model = (DefaultTableModel) tabla2.getModel();
+        model.setRowCount(0);
+
+        File folder = new File("data");
+        File file = new File(folder, "transacciones.csv");
+
+        try (Scanner sc = new Scanner(file)) {
+            while (sc.hasNextLine()) {
+                String linea = sc.nextLine();
+                String data[] = linea.split(",");
+                model.addRow(new Object[]{data[0], data[1], data[2], data[3]});
+            }
+
+        } catch (Exception ex) {
+            System.out.println("error " + ex);
+        }
+
+    }
+
 
     private void signupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupActionPerformed
         registro.setVisible(true);
@@ -462,8 +582,6 @@ public class UI extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         jusuario.setText("");
         jcontra.setText("");
-        mostrarArbol.setVisible(false);
-
     }//GEN-LAST:event_logoutActionPerformed
 
 
@@ -527,6 +645,7 @@ public class UI extends javax.swing.JFrame {
             } else if (u2 != null) {
                 a.realizarTransaccion(u, u2, dineroT);
                 a.guardarArchivo();
+                mostrarCuenta(u);
             } else {
                 JOptionPane.showMessageDialog(null, "Ese usuario no existe");
                 destino.setText("");
@@ -537,14 +656,17 @@ public class UI extends javax.swing.JFrame {
 
     }//GEN-LAST:event_realizarTransaccionActionPerformed
 
-    private void mostrarArbolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mostrarArbolActionPerformed
-        showArbol.setVisible(true);
-        showArbol.setLocationRelativeTo(null);
-    }//GEN-LAST:event_mostrarArbolActionPerformed
+    private void salir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salir1ActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_salir1ActionPerformed
 
-    private void cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarActionPerformed
-        showArbol.setVisible(false);
-    }//GEN-LAST:event_cerrarActionPerformed
+    private void logout1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logout1ActionPerformed
+        cuentaMaster.setVisible(false);
+        this.setVisible(true);
+        this.setLocationRelativeTo(null);
+        jusuario.setText("");
+        jcontra.setText("");
+    }//GEN-LAST:event_logout1ActionPerformed
 
     public void mostrarCuenta(Usuario u) {
         jid.setText(String.valueOf(u.getId()));
@@ -553,6 +675,17 @@ public class UI extends javax.swing.JFrame {
 
         cuenta.setVisible(true);
         registro.setVisible(false);
+        this.setVisible(false);
+    }
+    
+    public void mostrarCuentaAdmin(Usuario u) {
+        jid1.setText(String.valueOf(u.getId()));
+        jbalance1.setText(String.valueOf(u.getBalance()) + " $");
+        jnom1.setText(u.getNombre() + " " + u.getApellido());
+
+        cuentaMaster.setVisible(true);
+        registro.setVisible(false);
+        this.setVisible(false);
     }
 
     /**
@@ -592,8 +725,8 @@ public class UI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cerrar;
     private javax.swing.JFrame cuenta;
+    private javax.swing.JFrame cuentaMaster;
     private javax.swing.JTextField descripcion;
     private javax.swing.JTextField destino;
     private javax.swing.JLabel fondo;
@@ -607,32 +740,38 @@ public class UI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField japellido;
     private javax.swing.JLabel jbalance;
+    private javax.swing.JLabel jbalance1;
     private javax.swing.JPasswordField jcontra;
     private javax.swing.JPasswordField jcontraseña;
     private javax.swing.JTextField jemail;
     private javax.swing.JLabel jid;
+    private javax.swing.JLabel jid1;
     private javax.swing.JLabel jnom;
+    private javax.swing.JLabel jnom1;
     private javax.swing.JTextField jnombre;
     private javax.swing.JTextField jnumero;
     private javax.swing.JTextField jusuario;
     private javax.swing.JButton login;
     private javax.swing.JButton login1;
     private javax.swing.JButton logout;
+    private javax.swing.JButton logout1;
     private javax.swing.JTextField monto;
-    private javax.swing.JButton mostrarArbol;
     private javax.swing.JButton realizarTransaccion;
     private javax.swing.JButton registrarse;
     private javax.swing.JFrame registro;
     private javax.swing.JButton salir;
+    private javax.swing.JButton salir1;
     private javax.swing.JButton show;
     private javax.swing.JButton show1;
-    private javax.swing.JFrame showArbol;
+    private javax.swing.JPanel showArbol;
     private javax.swing.JButton signup;
     private javax.swing.JButton signup1;
+    private javax.swing.JTable tabla1;
+    private javax.swing.JTable tabla2;
     // End of variables declaration//GEN-END:variables
 }

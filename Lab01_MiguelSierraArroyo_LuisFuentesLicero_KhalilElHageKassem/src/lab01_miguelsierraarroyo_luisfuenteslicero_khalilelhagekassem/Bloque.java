@@ -65,7 +65,7 @@ public class Bloque extends Nodo {
     public void addTransaccion(int id, int u1ID, int u2ID, int monto) {
         Usuario u1 = UI.a.r.buscarUsuario(u1ID);
         Usuario u2 = UI.a.r.buscarUsuario(u2ID);
-
+        
         addTransaccion(new Transaccion(u1, u2, monto, id));
 
     }
