@@ -162,7 +162,7 @@ public class Raiz extends Nodo {
         } else if (m.getId() > u.getId()) {
             u.setDerecha(insertarUsuario(u.getDerecha(), m));
         } else {
-            throw new RuntimeException("duplicate Key!");
+            throw new RuntimeException("duplicate K");
         }
         return rebalance(u);
     }
@@ -204,8 +204,8 @@ public class Raiz extends Nodo {
     private Usuario rotateLeft(Usuario y) {
         Usuario x = y.getDerecha();
         Usuario z = x.getIzquierda();
-        x.setIzquierda(z);
-        y.setDerecha(y);
+        x.setIzquierda(y);
+        y.setDerecha(z);
         updateHeight(y);
         updateHeight(x);
         return x;
