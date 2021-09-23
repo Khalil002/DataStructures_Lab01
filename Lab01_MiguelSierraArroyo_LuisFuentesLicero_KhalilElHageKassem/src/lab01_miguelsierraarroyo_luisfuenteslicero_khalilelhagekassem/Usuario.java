@@ -154,6 +154,6 @@ public class Usuario extends Nodo {
     }
 
     public String getData() {
-        return this.nombre + "," + this.apellido + "," + this.numeroIdentificacion + "," + this.email + "," + this.contraseña + "," + this.id + "," + this.balance;
+        return this.id + "," + this.nombre + "," + this.apellido + "," + this.numeroIdentificacion + "," + this.email + "," + this.contraseña + "," + this.balance;
     }
 }
