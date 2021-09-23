@@ -7,7 +7,6 @@ package lab01_miguelsierraarroyo_luisfuenteslicero_khalilelhagekassem;
 
 import java.io.File;
 import java.util.Scanner;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 
@@ -370,7 +369,7 @@ public class UI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     int auxiliar = 0;
-    Arbol arbol = new Arbol();
+    Arbol a = new Arbol();
     Usuario u;
 
     private void ingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresarActionPerformed
@@ -485,7 +484,7 @@ public class UI extends javax.swing.JFrame {
                 emailRepetido = false;
             } else {
                 u = new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, 0);
-                arbol.registrarUsuario(u);
+                a.registrarUsuario(u);
                 
                 mostrarCuenta(u);
 
@@ -590,6 +589,9 @@ public class UI extends javax.swing.JFrame {
         jid.setText(String.valueOf(u.getId()));
         jbalance.setText(String.valueOf(u.getBalance()) + " $");
         jnom.setText(u.getNombre() + " " + u.getApellido());
+        
+        cuenta.setVisible(true);
+        registro.setVisible(false);
     }
 
     /**
