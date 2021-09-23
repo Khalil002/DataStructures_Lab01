@@ -374,6 +374,24 @@ public class UI extends javax.swing.JFrame {
     int auxiliar = 0;
     Arbol a = new Arbol();
     Usuario u;
+    
+    public void cerrar(){
+        
+        try{
+            this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            addWindowListener(new WindowAdapter(){
+                public void windowClosing(WindowEvent e){
+                    a.guardarArchivo();
+                    System.out.println("probando");
+                }
+            });
+            this.setVisible(true);
+            
+        }catch(Exception e){
+            System.out.println("error");
+        }
+        
+    }
 
 
     private void ingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresarActionPerformed
