@@ -89,8 +89,7 @@ public class TreePanel extends JPanel {
     //Actualiza el arbol binario cuando se inserta o se elimina un nodo
     public void updateTree(Arbol tree) {
         this.tree = tree;
-        //tree.nodePositions();
-        //tree.setMaxheight(tree.height());
+        tree.r.nodePositions();
         repaint();
     }
     

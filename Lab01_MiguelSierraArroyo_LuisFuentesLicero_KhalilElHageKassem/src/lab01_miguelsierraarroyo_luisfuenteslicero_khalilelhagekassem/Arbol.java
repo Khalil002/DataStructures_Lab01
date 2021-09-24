@@ -196,4 +196,8 @@ public class Arbol {
         return r.height();
     }
 
+    void setMaxheight(int height) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

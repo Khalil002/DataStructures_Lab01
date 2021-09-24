@@ -27,9 +27,14 @@ public class UI extends javax.swing.JFrame {
     /**
      * Creates new form UI
      */
+    
+    TreePanel panel;
     public UI() {
         initComponents();
         this.setLocationRelativeTo(null);
+        panel = new TreePanel(showArbol);
+        this.cuentaMaster.add(panel);
+        //this.add(panel);
     }
 
     /**
@@ -741,6 +746,7 @@ public class UI extends javax.swing.JFrame {
         cuentaMaster.setVisible(true);
         registro.setVisible(false);
         this.setVisible(false);
+        panel.updateTree(a);
     }
 
     /**
