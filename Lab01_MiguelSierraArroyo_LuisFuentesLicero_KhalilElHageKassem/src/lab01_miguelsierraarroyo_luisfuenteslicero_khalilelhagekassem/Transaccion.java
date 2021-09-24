@@ -32,6 +32,20 @@ public class Transaccion extends Nodo {
         idgen++;
     }
     
+    public Transaccion(Usuario u1, Usuario u2, float dinero, int x, int y) {
+        super("Transaccion "+idgen);
+        this.id = idgen;
+        this.u1ID = u1.getId();
+        this.u2ID = u2.getId();
+        estadoAntes = new Estado(u1.getBalance(), u2.getBalance());
+        u1.setBalance(u1.getBalance()-dinero);
+        u2.setBalance(u2.getBalance()+dinero);
+        estadoDespues = new Estado(u1.getBalance(), u2.getBalance());
+        dineroTransmitido = dinero;
+        
+        idgen++;
+    }
+    
     public Transaccion (Usuario u1, Usuario u2, float dinero, int id){
         super("Transaccion "+idgen);
         this.id = id;

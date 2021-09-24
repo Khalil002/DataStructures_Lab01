@@ -35,6 +35,7 @@ public class Lab01_MiguelSierraArroyo_LuisFuentesLicero_KhalilElHageKassem exten
         panel = new TreePanel(showArbol);
         this.cuentaMaster.add(panel);
         //this.add(panel);
+        a.abrirArchivos();
     }
 
     /**
@@ -462,6 +463,7 @@ public class Lab01_MiguelSierraArroyo_LuisFuentesLicero_KhalilElHageKassem exten
 
     int auxiliar = 0;
     Arbol a = new Arbol();
+    
     Usuario UsuarioGen = a.buscarUsuario(0);
     Usuario u;
 

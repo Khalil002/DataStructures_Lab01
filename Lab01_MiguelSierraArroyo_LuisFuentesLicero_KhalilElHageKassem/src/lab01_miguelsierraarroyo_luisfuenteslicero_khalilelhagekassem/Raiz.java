@@ -84,7 +84,7 @@ public class Raiz extends Nodo {
         return preOrder(this.usuario);
     }
 
-    private String preOrder(Usuario n) {
+    public String preOrder(Usuario n) {
         if (n != null) {
             return n.getData() + "\n" + preOrder(n.getIzquierda()) + preOrder(n.getDerecha());
         }
@@ -242,6 +242,7 @@ public class Raiz extends Nodo {
 
     public void insertarTransaccion(int id, Usuario u1, Usuario u2, float dinero) {
         Transaccion t = new Transaccion(u1, u2, dinero, id);
+        System.out.println(t.getData()+"\n");
         Bloque p = this.bloque;
         Bloque pnext = this.bloque.getBloqueSiguiente();
         while (pnext != null) {

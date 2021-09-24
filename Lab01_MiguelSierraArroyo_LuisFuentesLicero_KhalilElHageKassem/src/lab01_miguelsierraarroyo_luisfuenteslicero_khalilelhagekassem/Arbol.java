@@ -25,7 +25,7 @@ public class Arbol {
 
     public Arbol() {
         r = new Raiz("RochiCoin");
-        abrirArchivos();
+        
     }
 
     public Usuario buscarUsuario(int uID) {
@@ -146,7 +146,12 @@ public class Arbol {
 
                     //archivo id, nombre, apellido, cedula, email, contra, balance;
                     //insertar nombre, apellido, cedula, email, contra, id, balance;
-                    r.insertarUsuario(datos[1], datos[2], Integer.parseInt(datos[3]), datos[4], datos[5], Integer.parseInt(datos[0]), Float.parseFloat(datos[6]));
+                    if(Integer.parseInt(datos[0])==0){
+                        r.insertarUsuario(datos[1], datos[2], Integer.parseInt(datos[3]), datos[4], datos[5], Integer.parseInt(datos[0]), 1000);
+                    }else{
+                        r.insertarUsuario(datos[1], datos[2], Integer.parseInt(datos[3]), datos[4], datos[5], Integer.parseInt(datos[0]), 0);
+                    }
+                    
 
                     i++;
                 }
@@ -157,6 +162,7 @@ public class Arbol {
             } catch (Exception ex) {
                 System.out.println(ex + "bruh?");
             }
+            //System.out.println(r.preOrder(r.usuario));
         }
         
         File file1 = new File(folder, "transacciones.csv");
@@ -175,6 +181,9 @@ public class Arbol {
                     String datos[] = linea.split(",");
                     Usuario u1 = r.buscarUsuario(Integer.parseInt(datos[1]));
                     Usuario u2 = r.buscarUsuario(Integer.parseInt(datos[2]));
+                    System.out.println(u1.getData());
+                    System.out.println(u2.getData());
+                    System.out.println(i+"\n");
                     r.insertarTransaccion(Integer.parseInt(datos[0]),
                             u1,
                             u2,
@@ -188,6 +197,7 @@ public class Arbol {
             } catch (Exception ex) {
                 System.out.println(ex + " error en insertarTransacciones del archivo");
             }
+            //System.out.println(r.preOrder(r.usuario));
         }
 
     }
