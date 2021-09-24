@@ -31,7 +31,6 @@ public class Bloque extends Nodo {
         this.id = idgen;
         this.hashAnterior = hashAnterior;
         this.tiempodeCreacion = new Date().getTime();
-        //transacciones
         idgen++;
     }
 
@@ -74,13 +73,31 @@ public class Bloque extends Nodo {
     }
 
     public String calculateHash() {
-        String calculatedhash = StringUtil.applySha256(
+        String calculatedhash = applySha256(
                 hashAnterior
                 + Long.toString(tiempodeCreacion)
                 + Integer.toString(nonce)
                 + transacciones
         );
         return calculatedhash;
+    }
+    
+    private String applySha256(String input){
+        try {
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");	        
+			//Applies sha256 to our input, 
+			byte[] hash = digest.digest(input.getBytes("UTF-8"));	        
+			StringBuffer hexString = new StringBuffer(); 
+			for (int i = 0; i < hash.length; i++) {
+				String hex = Integer.toHexString(0xff & hash[i]);
+				if(hex.length() == 1) hexString.append('0');
+				hexString.append(hex);
+			}
+			return hexString.toString();
+		}
+		catch(Exception e) {
+			throw new RuntimeException(e);
+		}
     }
 
     
