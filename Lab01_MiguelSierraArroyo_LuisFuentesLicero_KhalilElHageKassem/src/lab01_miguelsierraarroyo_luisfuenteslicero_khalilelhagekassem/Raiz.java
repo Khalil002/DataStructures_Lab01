@@ -186,7 +186,6 @@ public class Raiz extends Nodo {
         } else if (u.getId() < id) {
             u.setDerecha(eliminarUsuario(u.getDerecha(), id));
         } else {
-            // node with only one child or no child
             if ((u.getIzquierda() == null) || (u.getDerecha() == null)) {
                 u = (u.getIzquierda() == null) ? u.getDerecha() : u.getIzquierda();
             } else {
@@ -252,9 +251,9 @@ public class Raiz extends Nodo {
     }
 
     private float verificarTransaccion(Usuario u1, Bloque bloque) {
-        //si el id es 0 la transaccion viene del master
-        //si el id es -1 la transaccion viene de un usuario eliminado
-        if (u1.getId() == 0 || u1.getId() == -1) {
+        /*si el id es 0 la transaccion viene del master o fue transmitida 
+        al master si el usuario origenario de la transaccion fue eliminado*/
+        if (u1.getId() == 0) {
             return -1;
         }
 
