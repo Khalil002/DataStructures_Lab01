@@ -134,7 +134,7 @@ public class Raiz extends Nodo {
     }
 
     public int height() {
-        return Math.max(userHeight(usuario), blockHeight(bloque));
+        return userHeight(usuario);
     }
 
     private int getBalance(Usuario n) {
@@ -292,6 +292,20 @@ public class Raiz extends Nodo {
 
     public int getTotalNodes() {
         return totalNodes;
+    }
+    
+    public void nodePositions() {
+        totalNodes = 0;
+        int depth = 1;
+        nodePositions(usuario, depth);
+    }
+    private void nodePositions(Usuario t, int depth) {
+        if (t != null) {
+            nodePositions(t.getIzquierda(), depth + 1); //add 1 to depth (y coordinate) 
+            t.setX((totalNodes++)); //x coord is node number in inorder traversal
+            t.setY(+depth); // mark y coord as depth
+            nodePositions(t.getDerecha(), depth + 1);
+        }
     }
 
 }

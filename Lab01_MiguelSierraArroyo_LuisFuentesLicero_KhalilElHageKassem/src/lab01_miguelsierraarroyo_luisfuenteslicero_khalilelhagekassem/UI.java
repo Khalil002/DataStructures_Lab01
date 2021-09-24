@@ -27,9 +27,14 @@ public class UI extends javax.swing.JFrame {
     /**
      * Creates new form UI
      */
+    
+    TreePanel panel;
     public UI() {
         initComponents();
         this.setLocationRelativeTo(null);
+        panel = new TreePanel(showArbol);
+        this.cuentaMaster.add(panel);
+        //this.add(panel);
     }
 
     /**
@@ -357,11 +362,11 @@ public class UI extends javax.swing.JFrame {
         showArbol.setLayout(showArbolLayout);
         showArbolLayout.setHorizontalGroup(
             showArbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 638, Short.MAX_VALUE)
+            .addGap(0, 635, Short.MAX_VALUE)
         );
         showArbolLayout.setVerticalGroup(
             showArbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 234, Short.MAX_VALUE)
+            .addGap(0, 232, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Mostrar arbol", showArbol);
@@ -483,6 +488,11 @@ public class UI extends javax.swing.JFrame {
                     crearTablaUsuarios();
                     crearTablaTransacciones();
                     mostrarCuentaAdmin(u);
+                    
+                    GUI_ABB iu = new GUI_ABB(a);
+                    iu.setVisible(true);
+                    this.setVisible(false);
+                    
 
                 } else {
                     mostrarCuenta(u);
@@ -741,6 +751,7 @@ public class UI extends javax.swing.JFrame {
         cuentaMaster.setVisible(true);
         registro.setVisible(false);
         this.setVisible(false);
+        panel.updateTree(a);
     }
 
     /**

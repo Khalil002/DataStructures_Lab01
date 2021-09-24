@@ -175,7 +175,6 @@ public class Arbol {
                     String datos[] = linea.split(",");
                     Usuario u1 = r.buscarUsuario(Integer.parseInt(datos[1]));
                     Usuario u2 = r.buscarUsuario(Integer.parseInt(datos[2]));
-                    System.out.println("a");
                     r.insertarTransaccion(Integer.parseInt(datos[0]),
                             u1,
                             u2,
@@ -195,6 +194,10 @@ public class Arbol {
 
     public int height() {
         return r.height();
+    }
+
+    void setMaxheight(int height) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
