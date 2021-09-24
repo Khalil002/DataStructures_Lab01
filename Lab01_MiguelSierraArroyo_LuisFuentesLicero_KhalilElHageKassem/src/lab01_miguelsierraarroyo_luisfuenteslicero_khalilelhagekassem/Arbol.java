@@ -37,7 +37,7 @@ public class Arbol {
     }
 
     public void realizarTransaccion(Usuario r1, Usuario r2, float dinero) {
-        r.realizarTransaccion(r1, r2, dinero);
+        r.registrarTransaccion(r1, r2, dinero);
     }
 
     public void eliminarUsuario(Usuario u) {
@@ -61,7 +61,7 @@ public class Arbol {
         } catch (IOException ex) {
             System.out.println("Error en crear el archivo");
         }
-        try (FileWriter fw = new FileWriter(file, false)) {
+        try ( FileWriter fw = new FileWriter(file, false)) {
             BufferedWriter bw = new BufferedWriter(fw);
 
             bw.write(r.preOrder());
@@ -80,7 +80,7 @@ public class Arbol {
         } catch (IOException ex) {
             System.out.println("Error en crear el archivo");
         }
-        try (FileWriter fw = new FileWriter(file2, false)) {
+        try ( FileWriter fw = new FileWriter(file2, false)) {
             BufferedWriter bw = new BufferedWriter(fw);
 
             bw.write(r.recorrerBloques());
@@ -107,7 +107,7 @@ public class Arbol {
                 System.out.println("error");
             }
         }
-        try (FileWriter fw = new FileWriter(file.getAbsoluteFile())) {
+        try ( FileWriter fw = new FileWriter(file.getAbsoluteFile())) {
             BufferedWriter bw = new BufferedWriter(fw);
             for (int i = 0; i < tabla.getRowCount(); i++) {
                 bw.write(tabla.getValueAt(i, 0) + "," + tabla.getValueAt(i, 1) + "," + tabla.getValueAt(i, 2) + "," + tabla.getValueAt(i, 3) + "," + tabla.getValueAt(i, 4) + "," + tabla.getValueAt(i, 5) + "," + tabla.getValueAt(i, 6));
@@ -186,13 +186,47 @@ public class Arbol {
                 System.out.println("Error en crear el folder");
             }
         }
+        
+        File file1 = new File(folder, "transacciones.csv");
+        if (!file1.exists()) {
+            try {
+                file1.createNewFile();
+            } catch (IOException ex) {
+                System.out.println("Error en crear el archivo transacciones");
+            }
+        } else {
+            try {
+                Scanner in = new Scanner(file1);
+                int i = 0;
+                while (in.hasNextLine()) {
+                    String linea = in.nextLine();
+                    String datos[] = linea.split(",");
+                    Usuario u1 = r.buscarUsuario(Integer.parseInt(datos[1]));
+                    Usuario u2 = r.buscarUsuario(Integer.parseInt(datos[2]));
+                    if(u1!=null && u2!=null){
+                        r.insertarTransaccion(Integer.parseInt(datos[0]),
+                             u1,
+                             u2,
+                             Float.parseFloat(datos[3]));
+                        i++;
+                    } 
+                }
+                if (i/3 > r.bloque.getIdgen()) {
+                    this.r.bloque.setIdgen(i);
+                }
+
+            } catch (Exception ex) {
+                System.out.println(ex + " error en insertarTransacciones del archivo");
+            }
+        }
+
         File file = new File(folder, "usuarios.csv");
         if (!file.exists()) {
             try {
                 file.createNewFile();
                 r.insertarUsuario("master", "admin", 0, "admin@master.com", "master", 0, 1000);
             } catch (IOException ex) {
-                System.out.println("Error en crear el archivo");
+                System.out.println("Error en crear el archivo de usuario");
             }
         } else {
             try {
@@ -205,6 +239,7 @@ public class Arbol {
                     //archivo id, nombre, apellido, cedula, email, contra, balance;
                     //insertar nombre, apellido, cedula, email, contra, id, balance;
                     r.insertarUsuario(datos[1], datos[2], Integer.parseInt(datos[3]), datos[4], datos[5], Integer.parseInt(datos[0]), Float.parseFloat(datos[6]));
+                    
 
                     i++;
                 }
@@ -217,35 +252,6 @@ public class Arbol {
             }
         }
 
-        File file1 = new File(folder, "transacciones.csv");
-        if (!file1.exists()) {
-            try {
-                file1.createNewFile();
-            } catch (IOException ex) {
-                System.out.println("Error en crear el archivo");
-            }
-        } else {
-            try {
-                Scanner in = new Scanner(file);
-                int i = 0;
-                while (in.hasNextLine()) {
-                    String linea = in.nextLine();
-                    String datos[] = linea.split(",");
-
-                    //archivo id, nombre, apellido, cedula, email, contra, balance;
-                    //insertar nombre, apellido, cedula, email, contra, id, balance;
-                    r.bloque.addTransaccion(Integer.parseInt(datos[1]), Integer.parseInt(datos[2]), Integer.parseInt(datos[3]), Integer.parseInt(datos[4]));
-
-                    i++;
-                }
-                if (i > r.bloque.getIdgen()) {
-                    this.r.bloque.setIdgen(i);
-                }
-
-            } catch (Exception ex) {
-                System.out.println(ex + "bruh?");
-            }
-        }
     }
 
     public int height() {

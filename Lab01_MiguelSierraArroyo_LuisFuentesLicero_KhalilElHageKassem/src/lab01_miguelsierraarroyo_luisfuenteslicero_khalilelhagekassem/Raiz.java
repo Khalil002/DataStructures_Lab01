@@ -42,86 +42,6 @@ public class Raiz extends Nodo {
         return null;
     }
 
-    public String buscarNombre(int uID) {
-        File f = new File("usuarios.csv");
-        try {
-            Scanner in = new Scanner(f);
-            while (in.hasNextLine()) {
-                String linea = in.nextLine();
-                String datos[] = linea.split(",");
-                String nombre = datos[0];
-                int id = Integer.parseInt(datos[5]);
-                if (uID == id) {
-                    return nombre;
-                }
-            }
-
-        } catch (Exception ex) {
-            System.out.println("error");
-        }
-        return null;
-    }
-
-    public String buscarApellido(int uID) {
-        File f = new File("usuarios.csv");
-        try {
-            Scanner in = new Scanner(f);
-            while (in.hasNextLine()) {
-                String linea = in.nextLine();
-                String datos[] = linea.split(",");
-                String apellido = datos[1];
-                int id = Integer.parseInt(datos[5]);
-                if (uID == id) {
-                    return apellido;
-                }
-            }
-
-        } catch (Exception ex) {
-            System.out.println("error");
-        }
-        return null;
-    }
-
-    public int buscarId(int uID) {
-        File f = new File("usuarios.csv");
-
-        try {
-            Scanner in = new Scanner(f);
-            while (in.hasNextLine()) {
-                String linea = in.nextLine();
-                String datos[] = linea.split(",");
-                int id = Integer.parseInt(datos[5]);
-                if (uID == id) {
-                    return id;
-                }
-            }
-        } catch (Exception ex) {
-            System.out.println("error");
-        }
-        return 0;
-    }
-
-    public float buscarBalance(int uID) {
-        File f = new File("usuarios.csv");
-
-        try {
-            Scanner in = new Scanner(f);
-            while (in.hasNextLine()) {
-                String linea = in.nextLine();
-                String datos[] = linea.split(",");
-                int id = Integer.parseInt(datos[5]);
-                float balance = Float.parseFloat(datos[6]);
-                if (uID == id) {
-                    return balance;
-                }
-            }
-
-        } catch (Exception ex) {
-            System.out.println("error");
-        }
-        return 0;
-    }
-
     public void registrarUsuario(Usuario u) {
         totalNodes++;
         if (usuario == null) {
@@ -135,12 +55,14 @@ public class Raiz extends Nodo {
     public void insertarUsuario(String nombre, String apellido, int numeroIdentificacion, String email, String contraseña, int id, float balance) {
         totalNodes++;
         Usuario u = new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, balance, id);
-        if (usuario == null) {
-            usuario = u;
-        } else {
-            this.usuario = insertarUsuario(this.usuario, u);
+        float verif = verificarTransaccion(u, bloque);
+        if (verif == u.getBalance() || verif == -1) {
+            if (usuario == null) {
+                usuario = u;
+            } else {
+                this.usuario = insertarUsuario(this.usuario, u);
+            }
         }
-
     }
 
     public String preOrder() {
@@ -291,27 +213,42 @@ public class Raiz extends Nodo {
         return u;
     }
 
-    public void realizarTransaccion(Usuario r1, Usuario r2, float dinero) {
+    public void registrarTransaccion(Usuario r1, Usuario r2, float dinero) {
         transaccion(r1, r2, dinero, this.bloque);
         totalNodes++;
     }
 
+    public void insertarTransaccion(int id, Usuario u1, Usuario u2, float dinero) {
+        Transaccion t = new Transaccion(u1, u2, dinero, id);
+        Bloque p = this.bloque;
+        Bloque pnext = this.bloque.getBloqueSiguiente();
+        while (pnext != null) {
+            p = pnext;
+            pnext = p.getBloqueSiguiente();
+        }
+        p.addTransaccion(t);
+    }
+
     private void transaccion(Usuario u1, Usuario u2, float dinero, Bloque bloque) {
-        if (verificarTransaccion(u1, bloque)) {
-            Transaccion t = new Transaccion(u1, u2, dinero);
-            Bloque p = bloque;
-            Bloque pnext = bloque.getBloqueSiguiente();
-            while (pnext != null) {
-                p = pnext;
-                pnext = p.getBloqueSiguiente();
+        float verif = verificarTransaccion(u1, bloque);
+        if (verif == u1.getBalance() || verif == -1) {
+            if (u1.getBalance() >= dinero) {
+                Transaccion t = new Transaccion(u1, u2, dinero);
+                Bloque p = bloque;
+                Bloque pnext = bloque.getBloqueSiguiente();
+                while (pnext != null) {
+                    p = pnext;
+                    pnext = p.getBloqueSiguiente();
+                }
+                p.addTransaccion(t);
             }
-            p.addTransaccion(t);
+
         }
     }
 
-    private boolean verificarTransaccion(Usuario u1, Bloque bloque) {
+    private float verificarTransaccion(Usuario u1, Bloque bloque) {
         if (u1.getId() == 0) {
-            return true;
+            return -1;
         }
 
         Bloque p = bloque;
@@ -326,7 +263,7 @@ public class Raiz extends Nodo {
             }
             p = p.getBloqueSiguiente();
         }
-        return balanceVerif == u1.getBalance();
+        return balanceVerif;
     }
 
     public int getTotalNodes() {
