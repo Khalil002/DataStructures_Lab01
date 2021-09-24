@@ -25,7 +25,7 @@ public class Arbol {
 
     public Arbol() {
         r = new Raiz("RochiCoin");
-        abrirUsuarios();
+        abrirArchivos();
     }
 
     public Usuario buscarUsuario(int uID) {
@@ -40,15 +40,15 @@ public class Arbol {
         r.registrarTransaccion(r1, r2, dinero);
     }
 
-    public void eliminarUsuario(Usuario u) {
-        r.eliminarUsuario(u, u.getId());
+    public void eliminarUsuario(int id) {
+        r.eliminarUsuario(id);
     }
 
     public int getTotalNodes() {
         return r.getTotalNodes();
     }
 
-    public void guardarArchivo() {
+    public void guardarArchivos() {
         File folder = new File("data");
         try {
             folder.mkdir();
@@ -95,70 +95,9 @@ public class Arbol {
 
     }
 
-    public void actualizarArchivo(DefaultTableModel model, File file, JTable tabla) {
+    
 
-        File f = new File("usuarios.csv");
-
-        if (!file.exists()) {
-            f.mkdir();
-            try {
-                file.createNewFile();
-            } catch (IOException ex) {
-                System.out.println("error");
-            }
-        }
-        try ( FileWriter fw = new FileWriter(file.getAbsoluteFile())) {
-            BufferedWriter bw = new BufferedWriter(fw);
-            for (int i = 0; i < tabla.getRowCount(); i++) {
-                bw.write(tabla.getValueAt(i, 0) + "," + tabla.getValueAt(i, 1) + "," + tabla.getValueAt(i, 2) + "," + tabla.getValueAt(i, 3) + "," + tabla.getValueAt(i, 4) + "," + tabla.getValueAt(i, 5) + "," + tabla.getValueAt(i, 6));
-                bw.newLine();
-            }
-            bw.flush();
-            bw.close();
-            fw.close();
-
-        } catch (Exception e) {
-            System.out.println("error");
-        }
-
-    }
-
-    static void removeLine(String filePath, String lineToRemove) throws IOException {
-        File inputFile = new File(filePath);
-        File tempFile = new File("C:\\user\\tmpFile.txt");
-        BufferedReader reader;
-        reader = new BufferedReader(new FileReader(inputFile));
-        BufferedWriter writer;
-        writer = new BufferedWriter(new FileWriter(tempFile));
-        String currentLine;
-        while ((currentLine = reader.readLine()) != null) {
-            String trimmedLine = currentLine.trim();
-            if (trimmedLine.equals(lineToRemove)) {
-                continue;
-            }
-            writer.write(currentLine + System.getProperty("line.separator"));
-        }
-        writer.close();
-        reader.close();
-        inputFile.delete();
-        tempFile.renameTo(inputFile);
-    }
-
-    public static void isOpen(String path) {
-        File file = new File(path);
-
-        // try to rename the file with the same name
-        File sameFileName = new File(path);
-
-        if (file.renameTo(sameFileName)) {
-            // if the file is renamed
-            System.out.println("file is closed");
-        } else {
-            // if the file didnt accept the renaming operation
-            System.out.println("file is opened");
-        }
-
-    }
+    
 
     public Raiz getR() {
         return r;
@@ -177,7 +116,7 @@ public class Arbol {
         }
     }
 
-    public void abrirUsuarios() {
+    public void abrirArchivos() {
         File folder = new File("data");
         if (!folder.exists()) {
             try {
@@ -186,39 +125,8 @@ public class Arbol {
                 System.out.println("Error en crear el folder");
             }
         }
-        
-        File file1 = new File(folder, "transacciones.csv");
-        if (!file1.exists()) {
-            try {
-                file1.createNewFile();
-            } catch (IOException ex) {
-                System.out.println("Error en crear el archivo transacciones");
-            }
-        } else {
-            try {
-                Scanner in = new Scanner(file1);
-                int i = 0;
-                while (in.hasNextLine()) {
-                    String linea = in.nextLine();
-                    String datos[] = linea.split(",");
-                    Usuario u1 = r.buscarUsuario(Integer.parseInt(datos[1]));
-                    Usuario u2 = r.buscarUsuario(Integer.parseInt(datos[2]));
-                    if(u1!=null && u2!=null){
-                        r.insertarTransaccion(Integer.parseInt(datos[0]),
-                             u1,
-                             u2,
-                             Float.parseFloat(datos[3]));
-                        i++;
-                    } 
-                }
-                if (i/3 > r.bloque.getIdgen()) {
-                    this.r.bloque.setIdgen(i);
-                }
 
-            } catch (Exception ex) {
-                System.out.println(ex + " error en insertarTransacciones del archivo");
-            }
-        }
+        
 
         File file = new File(folder, "usuarios.csv");
         if (!file.exists()) {
@@ -239,7 +147,6 @@ public class Arbol {
                     //archivo id, nombre, apellido, cedula, email, contra, balance;
                     //insertar nombre, apellido, cedula, email, contra, id, balance;
                     r.insertarUsuario(datos[1], datos[2], Integer.parseInt(datos[3]), datos[4], datos[5], Integer.parseInt(datos[0]), Float.parseFloat(datos[6]));
-                    
 
                     i++;
                 }
@@ -249,6 +156,38 @@ public class Arbol {
 
             } catch (Exception ex) {
                 System.out.println(ex + "bruh?");
+            }
+        }
+        
+        File file1 = new File(folder, "transacciones.csv");
+        if (!file1.exists()) {
+            try {
+                file1.createNewFile();
+            } catch (IOException ex) {
+                System.out.println("Error en crear el archivo transacciones");
+            }
+        } else {
+            try {
+                Scanner in = new Scanner(file1);
+                int i = 0;
+                while (in.hasNextLine()) {
+                    String linea = in.nextLine();
+                    String datos[] = linea.split(",");
+                    Usuario u1 = r.buscarUsuario(Integer.parseInt(datos[1]));
+                    Usuario u2 = r.buscarUsuario(Integer.parseInt(datos[2]));
+                    System.out.println("a");
+                    r.insertarTransaccion(Integer.parseInt(datos[0]),
+                            u1,
+                            u2,
+                            Float.parseFloat(datos[3]));
+                    i++;
+                }
+                if (i / 3 > r.bloque.getIdgen()) {
+                    this.r.bloque.setIdgen(i);
+                }
+
+            } catch (Exception ex) {
+                System.out.println(ex + " error en insertarTransacciones del archivo");
             }
         }
 

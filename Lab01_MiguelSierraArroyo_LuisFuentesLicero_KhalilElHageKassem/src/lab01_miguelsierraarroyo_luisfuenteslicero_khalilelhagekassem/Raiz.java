@@ -55,13 +55,10 @@ public class Raiz extends Nodo {
     public void insertarUsuario(String nombre, String apellido, int numeroIdentificacion, String email, String contraseña, int id, float balance) {
         totalNodes++;
         Usuario u = new Usuario(nombre, apellido, numeroIdentificacion, email, contraseña, balance, id);
-        float verif = verificarTransaccion(u, bloque);
-        if (verif == u.getBalance() || verif == -1) {
-            if (usuario == null) {
-                usuario = u;
-            } else {
-                this.usuario = insertarUsuario(this.usuario, u);
-            }
+        if (usuario == null) {
+            usuario = u;
+        } else {
+            this.usuario = insertarUsuario(this.usuario, u);
         }
     }
 
@@ -168,17 +165,25 @@ public class Raiz extends Nodo {
         return z;
     }
 
-    public Usuario eliminarUsuario(int id) {
+    public void eliminarUsuario(int id) {
         totalNodes--;
-        return eliminarUsuario(usuario, id);
+        corregirTransacciones(id, this.bloque);
+        this.usuario = eliminarUsuario(this.usuario, id);
+    }
+
+    private void corregirTransacciones(int id, Bloque b) {
+        if (b != null) {
+            b.corregirTransacciones(id);
+            corregirTransacciones(id, b.getBloqueSiguiente());
+        }
     }
 
     public Usuario eliminarUsuario(Usuario u, int id) {
         if (u == null) {
             return u;
-        } else if (u.getId() < id) {
-            u.setIzquierda(eliminarUsuario(u.getIzquierda(), id));
         } else if (u.getId() > id) {
+            u.setIzquierda(eliminarUsuario(u.getIzquierda(), id));
+        } else if (u.getId() < id) {
             u.setDerecha(eliminarUsuario(u.getDerecha(), id));
         } else {
             // node with only one child or no child
@@ -247,7 +252,9 @@ public class Raiz extends Nodo {
     }
 
     private float verificarTransaccion(Usuario u1, Bloque bloque) {
-        if (u1.getId() == 0) {
+        //si el id es 0 la transaccion viene del master
+        //si el id es -1 la transaccion viene de un usuario eliminado
+        if (u1.getId() == 0 || u1.getId() == -1) {
             return -1;
         }
 

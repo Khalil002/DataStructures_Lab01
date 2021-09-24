@@ -332,7 +332,7 @@ public class UI extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Cuenta destino", "Cuenta origen", "ID", "Monto transferido"
+                "ID transaccion", "Cuenta origen", "Cuenta destino", "Monto transferido"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -579,7 +579,7 @@ public class UI extends javax.swing.JFrame {
                 a.realizarTransaccion(UsuarioGen, u, 50);
             }
             mostrarCuenta(u);
-            a.guardarArchivo();
+            a.guardarArchivos();
 
             jnombre.setText("");
             japellido.setText("");
@@ -666,7 +666,7 @@ public class UI extends javax.swing.JFrame {
 
             } else if (u2 != null) {
                 a.realizarTransaccion(u, u2, dineroT);
-                a.guardarArchivo();
+                a.guardarArchivos();
                 mostrarCuenta(u);
             } else {
                 JOptionPane.showMessageDialog(null, "Ese usuario no existe");
@@ -705,9 +705,13 @@ public class UI extends javax.swing.JFrame {
         try {
 
             int selecteRow = tabla1.getSelectedRow();
-            if (selecteRow != -1 && Integer.parseInt((String) tabla1.getValueAt(selecteRow, 0)) != 0) {
+            int idElim = Integer.parseInt((String) tabla1.getValueAt(selecteRow, 0));
+            if (selecteRow != -1 && idElim != 0) {
                 model.removeRow(selecteRow);
-                a.actualizarArchivo(model, file, tabla1);
+                a.eliminarUsuario(idElim);
+                
+                a.guardarArchivos();
+                crearTablaTransacciones();
             } else if (Integer.parseInt((String) tabla1.getValueAt(selecteRow, 0)) == 0) {
                 JOptionPane.showMessageDialog(null, "No puede borrar el usuario del administrador");
             }

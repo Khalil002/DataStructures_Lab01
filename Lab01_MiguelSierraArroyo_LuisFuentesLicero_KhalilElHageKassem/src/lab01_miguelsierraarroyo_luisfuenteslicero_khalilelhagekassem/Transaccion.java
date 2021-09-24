@@ -80,4 +80,12 @@ public class Transaccion extends Nodo {
     public float getDineroTransmitido(){
         return dineroTransmitido;
     }
+
+    void corregirTransacciones(int id) {
+        if(u1ID == id){
+            u1ID = 0;
+        }else if(u2ID == id){
+            u2ID = 0;
+        }
+    }
 }

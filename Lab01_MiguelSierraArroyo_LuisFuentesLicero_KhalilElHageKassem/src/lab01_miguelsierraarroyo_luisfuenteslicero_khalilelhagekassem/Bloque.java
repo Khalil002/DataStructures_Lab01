@@ -98,4 +98,10 @@ public class Bloque extends Nodo {
     public static void setIdgen(int idgen) {
         Bloque.idgen = idgen;
     }
+
+    public void corregirTransacciones(int id) {
+        for(Transaccion t: transacciones){
+            t.corregirTransacciones(id);
+        }
+    }
 }
