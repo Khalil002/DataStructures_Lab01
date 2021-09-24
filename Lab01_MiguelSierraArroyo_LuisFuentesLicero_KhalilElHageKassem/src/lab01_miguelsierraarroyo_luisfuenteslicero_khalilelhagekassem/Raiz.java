@@ -17,13 +17,31 @@ public class Raiz extends Nodo {
     public Usuario usuario;
     public Bloque bloque;
     private int totalNodes = 0;
+    private int difficulty;
 
     public Raiz(String texto) {
         super(texto);
         bloque = new Bloque("0");
-        bloque.r = this;
         usuario = null;
+        this.difficulty=5;
     }
+    
+    public boolean isChainValid(){
+        Bloque b = this.bloque;
+        while(b!=null){
+            String prevHash = b.getHash();
+            b = b.getBloqueSiguiente();
+            String currentHash = b.getHashAnterior();
+            if(prevHash!=currentHash){
+                return false;
+            }
+            if(b.getHash()!=b.calculateHash()){
+                return false;
+            }
+        }
+        return true;
+    }
+    
 
     public Usuario buscarUsuario(int uID) {
         return buscar(usuario, uID);
